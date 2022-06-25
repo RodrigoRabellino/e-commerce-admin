@@ -1,7 +1,8 @@
 .App {
+  font-family: "Raleway", sans-serif;
   text-align: center;
+  background-color: "#F2DBB8";
 }
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
