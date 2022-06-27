@@ -4,7 +4,7 @@ import AdminLogin from "./components/login/AdminLogin";
 import DashBoard from "./components/dashboard/DashBoard";
 import AdminMain from "./components/adminMain/AdminMain";
 import ActionDial from "./components/actionsDial/ActionDial";
-import NewProductForm from "./components/newProductForm/NewProductForm";
+import ProductList from "./components/productList/ProductList";
 
 const MyRoutes = () => {
   const admin = useSelector((state) => state.admin);
@@ -15,7 +15,7 @@ const MyRoutes = () => {
       <Routes>
         <Route path="/" element={<AdminMain />} />
         <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/products" element={<ProductList />} />
       </Routes>
       <ActionDial />
     </>

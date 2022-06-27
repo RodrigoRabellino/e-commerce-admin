@@ -6,6 +6,7 @@ import AnimatedBg from "./animatedBg/AnimatedBg";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../../services/loginServices";
 import { useDispatch } from "react-redux";
+import MySnackBar from "../snackBar/MySnackBar";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("admin@admin.com");
@@ -13,9 +14,25 @@ const AdminLogin = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showSnack, setShowSnack] = useState(false);
+
+  const handleSnackOpen = () => setShowSnack(true);
+  const handleSnackHide = () => setShowSnack(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleLogin = (admin) => {
+    console.log("admin desde handle", admin);
+    try {
+      dispatch(AdminLogin(admin));
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.log("error handleLogin", error);
+      setErrorMessage("unknown error, try again later");
+      handleSnackOpen();
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,18 +44,18 @@ const AdminLogin = () => {
     setLoading(true);
     try {
       const admin = await loginAdmin(email, password);
-      if (!Object.entries(admin)) {
+      if (!Object.entries(admin).length === 0) {
         setErrorMessage("credentials are not good");
+        console.log("entries length = 0");
         setLoading(false);
         return setError(true);
       }
-      console.log("admin", admin);
+      handleLogin(admin);
     } catch (error) {
       console.log("errors in handleSub", error);
       setErrorMessage("credentials are not good");
       setError(true);
     }
-
     setLoading(false);
   };
 
@@ -117,7 +134,12 @@ const AdminLogin = () => {
                 <Box display="flex">
                   <IconButton
                     color="primary"
-                    onClick={() => navigate("/", { replace: false })}
+                    onClick={() => {
+                      window.open(
+                        process.env.REACT_APP_HOME_COMMERCE,
+                        "_blank"
+                      );
+                    }}
                   >
                     <Cottage />
                   </IconButton>
@@ -136,6 +158,12 @@ const AdminLogin = () => {
           </Paper>
         </Box>
       </AnimatedBg>
+      <MySnackBar
+        handleClose={handleSnackHide}
+        message={errorMessage}
+        open={showSnack}
+        severity="error"
+      />
     </Box>
   );
 };
