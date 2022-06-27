@@ -49,10 +49,10 @@ export const postNewProduct = async (data) => {
 };
 
 export const fetchAdminById = async (id, accessToken) => {
-  const body = { accessToken };
   try {
-    const response = await axios.get(`${API_URL}/admin/${id}`, body);
-    console.log(response);
+    const response = await axios.get(
+      `${API_URL}/admin/${id}?accessToken=${accessToken}`
+    );
     return response.data;
   } catch (error) {
     console.log("error in fetchCategories", error);

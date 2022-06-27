@@ -1,14 +1,15 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, IconButton, Paper, TextField, Typography } from "@mui/material";
 import { Cottage } from "@mui/icons-material";
-import { useState } from "react";
+import React, { useState } from "react";
 import AnimatedBg from "./animatedBg/AnimatedBg";
-import { useNavigate } from "react-router-dom";
-import { loginAdmin } from "../../services/loginServices";
+import { loginAdmin } from "../../redux/admin/slice";
 import { useDispatch } from "react-redux";
 import MySnackBar from "../snackBar/MySnackBar";
+import { getTokenAdmin } from "../../services/loginServices";
 
 const AdminLogin = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("admin@admin.com");
   const [password, setPassword] = useState("1234");
   const [isLoading, setLoading] = useState(false);
@@ -19,16 +20,10 @@ const AdminLogin = () => {
   const handleSnackOpen = () => setShowSnack(true);
   const handleSnackHide = () => setShowSnack(false);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const handleLogin = (admin) => {
-    console.log("admin desde handle", admin);
     try {
-      dispatch(AdminLogin(admin));
-      navigate("/", { replace: true });
+      dispatch(loginAdmin(admin));
     } catch (error) {
-      console.log("error handleLogin", error);
       setErrorMessage("unknown error, try again later");
       handleSnackOpen();
     }
@@ -43,16 +38,14 @@ const AdminLogin = () => {
     }
     setLoading(true);
     try {
-      const admin = await loginAdmin(email, password);
+      const admin = await getTokenAdmin(email, password);
       if (!Object.entries(admin).length === 0) {
         setErrorMessage("credentials are not good");
-        console.log("entries length = 0");
         setLoading(false);
         return setError(true);
       }
       handleLogin(admin);
     } catch (error) {
-      console.log("errors in handleSub", error);
       setErrorMessage("credentials are not good");
       setError(true);
     }

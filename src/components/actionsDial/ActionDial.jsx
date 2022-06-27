@@ -1,5 +1,11 @@
 import { Box, SpeedDial, SpeedDialAction, Modal } from "@mui/material";
-import { HomeRepairService, Add, PersonAdd, Print } from "@mui/icons-material";
+import {
+  HomeRepairService,
+  Add,
+  PersonAdd,
+  Print,
+  Cottage,
+} from "@mui/icons-material";
 import { useState } from "react";
 import MyModal from "../myModal/MyModal";
 import NewProductForm from "../newProductForm/NewProductForm";
@@ -9,7 +15,15 @@ const ActionDial = () => {
     { icon: <Add />, name: "New Product" },
     { icon: <PersonAdd />, name: "New User" },
     { icon: <Print />, name: "Print Report" },
+    { icon: <Cottage />, name: "Visit commerce" },
   ];
+
+  // onClick={() => {
+  //   window.open(
+  //     process.env.REACT_APP_HOME_COMMERCE,
+  //     "_blank"
+  //   );
+  // }}
 
   const handleCloseModal = () => setShowModal(false);
 
