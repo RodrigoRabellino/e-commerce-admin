@@ -176,141 +176,101 @@ const AdminMain = () => {
 const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
   const items = [
     {
-      onclick: () => setPanelSelected("productList"),
+      onClickItem: () => setPanelSelected("productList"),
       icon: <ViewList />,
       iconName: "View List",
     },
     {
-      onclick: () => setPanelSelected("dashboard"),
+      onClickItem: () => setPanelSelected("dashboard"),
       icon: <DashboardIcon />,
       iconName: "Dashboard",
     },
     {
-      onclick: () => setPanelSelected("creator"),
+      onClickItem: () => setPanelSelected("creator"),
       icon: <AddCircleOutline />,
       iconName: "Create",
+    },
+  ];
+
+  const actions = [
+    {
+      onClickAction: () => {
+        window.open(process.env.REACT_APP_HOME_COMMERCE, "_blank");
+      },
+      icon: <Cottage />,
+      iconName: "To Commerce",
+    },
+    {
+      onClickAction: handleLogOut,
+      icon: <Logout />,
+      iconName: "LogOut",
     },
   ];
 
   return (
     <>
       <List>
-        <ListItem disablePadding sx={{ display: "block" }}>
-          <ListItemButton
-            onClick={() => setPanelSelected("productList")}
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              <ViewList />
-            </ListItemIcon>
-            <ListItemText
-              primary={"View List"}
-              sx={{ opacity: open ? 1 : 0 }}
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }}>
-          <ListItemButton
-            onClick={() => setPanelSelected("dashboard")}
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={"Dashboard"}
-              sx={{ opacity: open ? 1 : 0 }}
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }}>
-          <ListItemButton
-            onClick={() => setPanelSelected("creator")}
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              <AddCircleOutline />
-            </ListItemIcon>
-            <ListItemText primary={"Create"} sx={{ opacity: open ? 1 : 0 }} />
-          </ListItemButton>
-        </ListItem>
+        {items.map((item) => {
+          const { onClickItem, icon, iconName } = item;
+          return (
+            <ListItem disablePadding sx={{ display: "block" }} key={iconName}>
+              <ListItemButton
+                onClick={onClickItem}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={iconName}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
       <Divider />
       <List>
-        <ListItem disablePadding sx={{ display: "block" }}>
-          <ListItemButton
-            onClick={() => {
-              window.open(process.env.REACT_APP_HOME_COMMERCE, "_blank");
-            }}
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              <Cottage />
-            </ListItemButton>
-            <ListItemText primary={"LogOut"} sx={{ opacity: open ? 1 : 0 }} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }}>
-          <ListItemButton
-            onClick={handleLogOut}
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              <Logout />
-            </ListItemButton>
-            <ListItemText primary={"LogOut"} sx={{ opacity: open ? 1 : 0 }} />
-          </ListItemButton>
-        </ListItem>
+        {actions.map((action) => {
+          const { onClickAction, icon, iconName } = action;
+          return (
+            <ListItem disablePadding sx={{ display: "block" }} key={iconName}>
+              <ListItemButton
+                onClick={onClickAction}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={iconName}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
     </>
   );
