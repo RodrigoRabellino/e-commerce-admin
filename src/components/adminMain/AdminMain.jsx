@@ -21,10 +21,15 @@ import {
   Menu,
   ViewList,
   Logout,
+  AddCircleOutline,
+  Cottage,
 } from "@mui/icons-material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import ProductList from "../productList/ProductList";
 import { useDispatch } from "react-redux";
 import { logOutAdmin } from "../../redux/admin/slice";
+import DashBoard from "../dashboard/DashBoard";
+import Creator from "../creator/Creator";
 
 const drawerWidth = 220;
 
@@ -93,16 +98,31 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const SideBar = () => {
+const AdminMain = () => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const [panelSelected, setPanelSelected] = useState("productList");
 
   const handleLogOut = () => dispatch(logOutAdmin());
 
   const handleDrawerOpen = () => setOpen(true);
 
   const handleDrawerClose = () => setOpen(false);
+
+  const getPanel = (panel) => {
+    switch (panel) {
+      case "productList":
+        return <ProductList />;
+      case "dashboard":
+        return <DashBoard />;
+      case "creator":
+        return <Creator />;
+
+      default:
+        return <DashBoard />;
+    }
+  };
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
@@ -133,7 +153,11 @@ const SideBar = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <DrawerItems open={open} handleLogOut={handleLogOut} />
+        <DrawerItems
+          open={open}
+          handleLogOut={handleLogOut}
+          setPanelSelected={setPanelSelected}
+        />
       </Drawer>
       <Box
         sx={{
@@ -143,18 +167,37 @@ const SideBar = () => {
           overflowY: "scroll",
         }}
       >
-        <ProductList />
+        {getPanel(panelSelected)}
       </Box>
     </Box>
   );
 };
 
-const DrawerItems = ({ open, handleLogOut }) => {
+const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
+  const items = [
+    {
+      onclick: () => setPanelSelected("productList"),
+      icon: <ViewList />,
+      iconName: "View List",
+    },
+    {
+      onclick: () => setPanelSelected("dashboard"),
+      icon: <DashboardIcon />,
+      iconName: "Dashboard",
+    },
+    {
+      onclick: () => setPanelSelected("creator"),
+      icon: <AddCircleOutline />,
+      iconName: "Create",
+    },
+  ];
+
   return (
     <>
       <List>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton
+            onClick={() => setPanelSelected("productList")}
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
@@ -176,12 +219,9 @@ const DrawerItems = ({ open, handleLogOut }) => {
             />
           </ListItemButton>
         </ListItem>
-      </List>
-      <Divider />
-      <List>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton
-            onClick={handleLogOut}
+            onClick={() => setPanelSelected("dashboard")}
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
@@ -195,8 +235,79 @@ const DrawerItems = ({ open, handleLogOut }) => {
                 justifyContent: "center",
               }}
             >
-              <Logout />
+              <DashboardIcon />
             </ListItemIcon>
+            <ListItemText
+              primary={"Dashboard"}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <ListItemButton
+            onClick={() => setPanelSelected("creator")}
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+              }}
+            >
+              <AddCircleOutline />
+            </ListItemIcon>
+            <ListItemText primary={"Create"} sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <ListItemButton
+            onClick={() => {
+              window.open(process.env.REACT_APP_HOME_COMMERCE, "_blank");
+            }}
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <ListItemButton
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+              }}
+            >
+              <Cottage />
+            </ListItemButton>
+            <ListItemText primary={"LogOut"} sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <ListItemButton
+            onClick={handleLogOut}
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <ListItemButton
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+              }}
+            >
+              <Logout />
+            </ListItemButton>
             <ListItemText primary={"LogOut"} sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
         </ListItem>
@@ -205,4 +316,4 @@ const DrawerItems = ({ open, handleLogOut }) => {
   );
 };
 
-export default SideBar;
+export default AdminMain;

@@ -15,6 +15,7 @@ import { validationSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
 import { fetchCategories, postNewProduct } from "../../services/apiServices";
 import MySnackBar from "../snackBar/MySnackBar";
+import { useSelector } from "react-redux";
 
 const NewProductForm = () => {
   const [categories, setCategories] = useState([]);
@@ -22,6 +23,7 @@ const NewProductForm = () => {
   const [ErrorCategory, setErrorCategory] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
+  const admin = useSelector((state) => state.admin);
 
   const handleCloseSnack = () => setOpenSnack(false);
   const handleOpenSnack = (message) => {
@@ -60,7 +62,7 @@ const NewProductForm = () => {
       stock: 1,
       categoryId: "",
       starred: false,
-      createdBy: "62b10046f3d5c27377f6204d",
+      createdBy: admin._id,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => handleSubmit(values),

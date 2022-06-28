@@ -7,7 +7,6 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Typography,
 } from "@mui/material";
 import { MoreVert, Print } from "@mui/icons-material";
 import MyChartBar from "./myCharts/MyChartBar";
@@ -35,29 +34,26 @@ const DashBoard = () => {
     <Box
       sx={{ background: "#eaeaea" }}
       width="100%"
-      height="100vh"
+      height="100%"
       display="flex"
       alignItems="center"
       justifyContent="space-evenly"
     >
-      <Paper
-        elevation={0}
-        sx={{
-          width: "250px",
-          height: "90%",
-          background: colors.secondary,
-        }}
-      >
-        <MenuButton />
-      </Paper>
-
       <Box
+        label="cosopum"
         padding="1rem"
         display="flex"
-        flexDirection="column"
+        flexDirection="row"
         alignItems="center"
       >
-        <Grid container spacing={4} marginBottom="0.65rem">
+        <Grid
+          container
+          spacing={4}
+          marginBottom="0.65rem"
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+        >
           <Grid item lg="auto">
             <Paper elevation={0} sx={cardStyle}>
               <Box width="100%">
@@ -74,7 +70,7 @@ const DashBoard = () => {
             <Paper elevation={0} sx={cardStyle}></Paper>
           </Grid>
         </Grid>
-        <Box width="90%" display="flex">
+        <Box width="90%" height="90%" display="flex">
           <MyChartBar colors={colors} />
         </Box>
       </Box>
