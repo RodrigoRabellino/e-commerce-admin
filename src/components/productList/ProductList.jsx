@@ -22,35 +22,50 @@ import {
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux/es/exports";
-import { fetchAdminById, fetchProducts } from "../../services/apiServices";
+import {
+  fetchAdminById,
+  fetchCategories,
+  fetchProducts,
+} from "../../services/apiServices";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
       const response = await fetchProducts();
       setProducts(response);
     };
+    const getCategories = async () => {
+      const response = await fetchCategories();
+      setCategories(response);
+    };
     getProducts();
+    getCategories();
   }, []);
-  console.log(products);
 
   return (
     <Box
       sx={{
-        width: "100vw",
-        minHeight: "100wh",
+        width: "100%",
       }}
     >
       <TableContainer component={Box}>
         <Table aria-label="product table">
-          <TableHead sx={{ backgroundColor: "rgb(0,0,0, 0.22)" }}>
+          <TableHead
+            sx={{
+              backgroundColor: "rgb(0,0,0, 0.22)",
+              height: "70px",
+            }}
+          >
             <TableRow>
-              <TableCell />
-              <TableCell align="center">
+              <TableCell sx={{ width: "60px" }} />
+              <TableCell align="center" sx={{ width: "60px" }}>
                 <Checkbox />
               </TableCell>
-              <TableCell>Name</TableCell>
+              <TableCell sx={{ width: "40%", overflow: "hidden" }}>
+                Name
+              </TableCell>
               <TableCell align="right">Category</TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Stock</TableCell>
@@ -64,7 +79,12 @@ const ProductList = () => {
           ) : (
             <TableBody>
               {products.map((product) => {
-                return <Row product={product} key={product._id} />;
+                const cat = categories.find(
+                  (category) => category._id === product.categoryId
+                );
+                return (
+                  <Row product={product} key={product._id} category={cat} />
+                );
               })}
             </TableBody>
           )}
@@ -74,8 +94,8 @@ const ProductList = () => {
   );
 };
 
-const Row = ({ product }) => {
-  const { name, categoryId, price, starred, stock } = product;
+const Row = ({ product, category }) => {
+  const { name, price, starred, stock } = product;
   const [open, setOpen] = useState(false);
 
   return (
@@ -93,18 +113,40 @@ const Row = ({ product }) => {
             {open ? <KeyboardArrowUp /> : <KeyboardArrowRight />}
           </IconButton>
         </TableCell>
-        <TableCell align="center">
+        <TableCell align="center" sx={{ width: "60px" }}>
           <Checkbox />
         </TableCell>
-        <TableCell>{name}</TableCell>
-        <TableCell align="right">{categoryId}</TableCell>
-        <TableCell align="right">{price}</TableCell>
-        <TableCell align="right">{stock}</TableCell>
+        <TableCell sx={{ width: "40%", overflow: "hidden" }}>
+          <Typography noWrap textOverflow="ellipsis">
+            {name.substring(0, 50)} {name.length > 50 ? "..." : ""}
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography fontWeight="600" noWrap textOverflow="ellipsis">
+            {category.name}
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography noWrap textOverflow="ellipsis">
+            {`U$S-${price}`}
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography noWrap textOverflow="ellipsis">
+            {stock}
+          </Typography>
+        </TableCell>
         <TableCell align="right">
           <Switch checked={starred} />
         </TableCell>
         <TableCell align="center">
-          <Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "nowrap",
+            }}
+          >
             <IconButton>
               <Edit />
             </IconButton>
@@ -137,7 +179,7 @@ const ItemDesc = ({ open, product }) => {
   }, []);
 
   return (
-    <Collapse in={open} timeout="auto" unmountOnExit sx={{ width: "95%" }}>
+    <Collapse in={open} timeout="auto" unmountOnExit>
       <Box display="flex" flexDirection="column" width="100%" padding="1rem">
         <Box paddingTop="0.65rem">
           <Typography textAlign="center" variant="subtitle1" fontWeight="700">
