@@ -22,7 +22,6 @@ const Creator = () => {
     borderRadius: "0 10px 10px 0",
     ":hover": {
       transition: "0.3s",
-      borderRadius: "0 15px 15px 0",
       width: "95%",
     },
   };

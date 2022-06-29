@@ -17,7 +17,7 @@ import { fetchCategories, postNewProduct } from "../../services/apiServices";
 import MySnackBar from "../snackBar/MySnackBar";
 import { useSelector } from "react-redux";
 
-const NewProductForm = () => {
+const EditProductList = ({ product }) => {
   const [categories, setCategories] = useState([]);
   const [catSelected, setCatSelected] = useState({});
   const [ErrorCategory, setErrorCategory] = useState(false);
@@ -52,16 +52,26 @@ const NewProductForm = () => {
     console.log(resp);
     handleOpenSnack(values.name + " created");
   };
-
+  const {
+    _id,
+    name,
+    description,
+    imgUrl,
+    price,
+    stock,
+    categoryId,
+    starred,
+    show,
+  } = product;
   const formik = useFormik({
     initialValues: {
-      name: "",
-      description: "",
+      name: name,
+      description: description,
       imgUrl: "",
-      price: 1,
-      stock: 1,
-      categoryId: "",
-      starred: false,
+      price: price,
+      stock: stock,
+      categoryId: categoryId,
+      starred: starred,
       createdBy: admin._id,
     },
     validationSchema: validationSchema,
@@ -123,6 +133,7 @@ const NewProductForm = () => {
             {categories.map((category, i) => {
               return (
                 <MenuItem
+                  selected={categoryId === category._id ? true : false}
                   key={category._id}
                   value={category._id}
                   id={category._id}
@@ -177,4 +188,4 @@ const NewProductForm = () => {
   );
 };
 
-export default NewProductForm;
+export default EditProductList;

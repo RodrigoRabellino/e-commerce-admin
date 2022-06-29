@@ -28,23 +28,36 @@ import {
   fetchAdminById,
   fetchCategories,
   fetchAllProducts,
+  toggleShowInProduct,
+  toggleStarredProduct,
 } from "../../services/apiServices";
 import MySnackBar from "../snackBar/MySnackBar";
+import MyModal from "../myModal/MyModal";
+import EditProductList from "../editProductForm/EditProductForm";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [checkAll, setCheckAll] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [messageSnack, setMessageSnack] = useState("");
-  const [severirySnack, setSeverirySnack] = useState("");
+  const [severitySnack, setSeveritySnack] = useState("");
   const { accessToken } = useSelector((state) => state.admin);
+  const [openModal, setOpenModal] = useState(false);
+  const [productToEdit, setProductToEdit] = useState({});
+
+  const handleOpenModal = (product) => {
+    setProductToEdit(product);
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => setOpenModal(false);
 
   const handleOpenSnack = () => setOpenSnack(true);
   const handleCloseSnack = () => setOpenSnack(false);
 
   const handleSnack = (message, severity) => {
     setMessageSnack(message);
-    setSeverirySnack(severity);
+    setSeveritySnack(severity);
     handleOpenSnack();
   };
 
@@ -73,13 +86,18 @@ const ProductList = () => {
           <TableHead
             sx={{
               backgroundColor: "rgb(0,0,0, 0.22)",
-              height: "70px",
             }}
           >
             <TableRow>
-              <TableCell sx={{ width: "60px" }} />
+              <TableCell align="center">
+                <Typography fontWeight="600">Total:</Typography>
+                <Typography fontWeight="600">{products.length}</Typography>
+              </TableCell>
               <TableCell align="center" sx={{ width: "60px" }}>
-                <Checkbox />
+                <Checkbox
+                  value={checkAll}
+                  onChange={() => setCheckAll((prev) => !prev)}
+                />
               </TableCell>
               <TableCell sx={{ width: "40%", overflow: "hidden" }}>
                 Name
@@ -103,10 +121,12 @@ const ProductList = () => {
                 );
                 return (
                   <Row
-                    product={product}
+                    checkAll={checkAll}
+                    productRow={product}
                     key={product._id}
                     category={cat}
                     handleSnack={handleSnack}
+                    handleModal={handleOpenModal}
                   />
                 );
               })}
@@ -114,35 +134,50 @@ const ProductList = () => {
           )}
         </Table>
       </TableContainer>
+      <MyModal handleClose={handleCloseModal} open={openModal}>
+        <EditProductList product={productToEdit} />
+      </MyModal>
       <MySnackBar
         handleClose={handleCloseSnack}
         open={openSnack}
         message={messageSnack}
-        severity={severirySnack}
+        severity={severitySnack}
       />
     </Box>
   );
 };
 
-const Row = ({ product, category, handleSnack }) => {
-  const { name, price, starred, stock, show } = product;
+const Row = ({ checkAll, productRow, category, handleSnack, handleModal }) => {
+  const [product, setProduct] = useState(productRow);
+  const { name, price, starred, stock, show, _id } = product;
   const { accessToken } = useSelector((state) => state.admin);
   const [open, setOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
 
-  const handleSetStarred = () => {};
-  const handleSetShow = () => {};
+  const handleSetStarred = async () => {
+    const response = await toggleStarredProduct(_id, accessToken);
+    setProduct(response);
+  };
+  const handleToggleShow = async () => {
+    const response = await toggleShowInProduct(_id, accessToken);
+    setProduct(response);
+  };
   const handleDelete = () => {
     handleSnack("this function is not available now", "warning");
   };
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell
-          align="center"
-          sx={{ backgroundColor: "rgb(0,0,0, 0.22)", width: "60px" }}
-        >
+      <TableRow
+        sx={
+          isSelected
+            ? {
+                backgroundColor: "rgb(169,255,228, 0.55)",
+              }
+            : {}
+        }
+      >
+        <TableCell align="center" sx={{ width: "60px" }}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -188,7 +223,7 @@ const Row = ({ product, category, handleSnack }) => {
           <IconButton
             size="small"
             disabled={!isSelected}
-            onClick={handleSetShow}
+            onClick={handleToggleShow}
           >
             {show ? <Visibility /> : <VisibilityOff />}
           </IconButton>
@@ -201,7 +236,7 @@ const Row = ({ product, category, handleSnack }) => {
               flexWrap: "nowrap",
             }}
           >
-            <IconButton>
+            <IconButton onClick={() => handleModal(product)}>
               <Edit />
             </IconButton>
             <IconButton disabled={!isSelected} onClick={handleDelete}>
@@ -251,7 +286,7 @@ const ItemDesc = ({ open, product }) => {
             by: {createdName}
           </Typography>
         </Box>
-        <Box display="flex" justifyContent="center">
+        <Box display="flex" justifyContent="space-evenly">
           {imgUrl.map((image) => {
             return (
               <Box
