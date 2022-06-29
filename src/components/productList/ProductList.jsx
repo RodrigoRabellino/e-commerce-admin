@@ -3,6 +3,8 @@ import {
   Edit,
   KeyboardArrowUp,
   KeyboardArrowRight,
+  Visibility,
+  VisibilityOff,
 } from "@mui/icons-material";
 import {
   Box,
@@ -25,15 +27,31 @@ import { useSelector } from "react-redux/es/exports";
 import {
   fetchAdminById,
   fetchCategories,
-  fetchProducts,
+  fetchAllProducts,
 } from "../../services/apiServices";
+import MySnackBar from "../snackBar/MySnackBar";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [messageSnack, setMessageSnack] = useState("");
+  const [severirySnack, setSeverirySnack] = useState("");
+  const { accessToken } = useSelector((state) => state.admin);
+
+  const handleOpenSnack = () => setOpenSnack(true);
+  const handleCloseSnack = () => setOpenSnack(false);
+
+  const handleSnack = (message, severity) => {
+    setMessageSnack(message);
+    setSeverirySnack(severity);
+    handleOpenSnack();
+  };
+
   useEffect(() => {
     const getProducts = async () => {
-      const response = await fetchProducts();
+      const response = await fetchAllProducts(accessToken);
+      console.log(response);
       setProducts(response);
     };
     const getCategories = async () => {
@@ -70,7 +88,8 @@ const ProductList = () => {
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Stock</TableCell>
               <TableCell align="right">Starred</TableCell>
-              <TableCell align="center"> Actions</TableCell>
+              <TableCell align="center">Show</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
 
@@ -83,20 +102,39 @@ const ProductList = () => {
                   (category) => category._id === product.categoryId
                 );
                 return (
-                  <Row product={product} key={product._id} category={cat} />
+                  <Row
+                    product={product}
+                    key={product._id}
+                    category={cat}
+                    handleSnack={handleSnack}
+                  />
                 );
               })}
             </TableBody>
           )}
         </Table>
       </TableContainer>
+      <MySnackBar
+        handleClose={handleCloseSnack}
+        open={openSnack}
+        message={messageSnack}
+        severity={severirySnack}
+      />
     </Box>
   );
 };
 
-const Row = ({ product, category }) => {
-  const { name, price, starred, stock } = product;
+const Row = ({ product, category, handleSnack }) => {
+  const { name, price, starred, stock, show } = product;
+  const { accessToken } = useSelector((state) => state.admin);
   const [open, setOpen] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handleSetStarred = () => {};
+  const handleSetShow = () => {};
+  const handleDelete = () => {
+    handleSnack("this function is not available now", "warning");
+  };
 
   return (
     <>
@@ -114,7 +152,10 @@ const Row = ({ product, category }) => {
           </IconButton>
         </TableCell>
         <TableCell align="center" sx={{ width: "60px" }}>
-          <Checkbox />
+          <Checkbox
+            value={isSelected}
+            onChange={() => setIsSelected((prev) => !prev)}
+          />
         </TableCell>
         <TableCell sx={{ width: "40%", overflow: "hidden" }}>
           <Typography noWrap textOverflow="ellipsis">
@@ -137,7 +178,20 @@ const Row = ({ product, category }) => {
           </Typography>
         </TableCell>
         <TableCell align="right">
-          <Switch checked={starred} />
+          <Switch
+            checked={starred}
+            disabled={!isSelected}
+            onChange={handleSetStarred}
+          />
+        </TableCell>
+        <TableCell align="center">
+          <IconButton
+            size="small"
+            disabled={!isSelected}
+            onClick={handleSetShow}
+          >
+            {show ? <Visibility /> : <VisibilityOff />}
+          </IconButton>
         </TableCell>
         <TableCell align="center">
           <Box
@@ -150,7 +204,7 @@ const Row = ({ product, category }) => {
             <IconButton>
               <Edit />
             </IconButton>
-            <IconButton>
+            <IconButton disabled={!isSelected} onClick={handleDelete}>
               <Delete />
             </IconButton>
           </Box>

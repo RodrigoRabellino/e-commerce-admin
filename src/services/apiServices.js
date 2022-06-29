@@ -10,6 +10,17 @@ export const fetchProducts = async (page) => {
   }
 };
 
+export const fetchAllProducts = async (accessToken) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/product/all?accessToken=${accessToken}`
+    );
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const fetchStarredProducts = async () => {
   try {
     const response = await axios.get(`${API_URL}/product/starred`);
