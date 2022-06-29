@@ -7,6 +7,8 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Typography,
+  Stack,
 } from "@mui/material";
 import { MoreVert, Print } from "@mui/icons-material";
 import MyChartBar from "./myCharts/MyChartBar";
@@ -25,54 +27,42 @@ const colors = {
 const DashBoard = () => {
   const cardStyle = {
     borderRadius: "15px",
-    background: colors.background,
-    width: "300px",
-    height: "150px",
-    padding: "0.65rem",
+    background: "#ffffff",
+    width: "350px",
+    height: "200px",
+    padding: "1rem",
   };
   return (
     <Box
-      sx={{ background: "#eaeaea" }}
-      width="100%"
-      height="100%"
       display="flex"
+      padding="1.5rem"
+      justifyContent="space-around"
       alignItems="center"
-      justifyContent="space-evenly"
     >
-      <Box
-        label="cosopum"
-        padding="1rem"
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-      >
-        <Grid
-          container
-          spacing={4}
-          marginBottom="0.65rem"
-          display="flex"
-          justifyContent="center"
-          flexDirection="column"
+      <Stack spacing={2}>
+        <Paper elevation={3} sx={cardStyle}>
+          <Box width="100%">
+            <MyChartLine colors={colors} />
+          </Box>
+        </Paper>
+        <Paper elevation={3} sx={cardStyle}>
+          <MyChartBubble colors={colors} />
+        </Paper>
+      </Stack>
+      <Box display="flex">
+        <Paper
+          sx={{
+            ...cardStyle,
+            width: "850px",
+            height: "auto",
+            padding: "1.5rem",
+          }}
         >
-          <Grid item lg="auto">
-            <Paper elevation={0} sx={cardStyle}>
-              <Box width="100%">
-                <MyChartLine colors={colors} />
-              </Box>
-            </Paper>
-          </Grid>
-          <Grid item lg="auto">
-            <Paper elevation={0} sx={cardStyle}>
-              <MyChartBubble colors={colors} />
-            </Paper>
-          </Grid>
-          <Grid item lg="auto">
-            <Paper elevation={0} sx={cardStyle}></Paper>
-          </Grid>
-        </Grid>
-        <Box width="90%" height="90%" display="flex">
+          <Typography fontWeight="600" variant="h5">
+            Sales in month
+          </Typography>
           <MyChartBar colors={colors} />
-        </Box>
+        </Paper>
       </Box>
     </Box>
   );

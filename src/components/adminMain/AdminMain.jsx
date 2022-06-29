@@ -12,6 +12,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
@@ -23,6 +24,8 @@ import {
   Logout,
   AddCircleOutline,
   Cottage,
+  Group,
+  AccountBalanceWallet,
 } from "@mui/icons-material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ProductList from "../productList/ProductList";
@@ -102,7 +105,7 @@ const AdminMain = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [panelSelected, setPanelSelected] = useState("productList");
+  const [panelSelected, setPanelSelected] = useState("dashboard");
 
   const handleLogOut = () => dispatch(logOutAdmin());
 
@@ -118,7 +121,6 @@ const AdminMain = () => {
         return <DashBoard />;
       case "creator":
         return <Creator />;
-
       default:
         return <DashBoard />;
     }
@@ -161,8 +163,8 @@ const AdminMain = () => {
       </Drawer>
       <Box
         sx={{
-          flexGrow: 1,
-          backgroundColor: "#ffffff",
+          width: "100%",
+          backgroundColor: "#fafbfd",
           marginTop: "64px",
           overflowY: "scroll",
         }}
@@ -176,15 +178,26 @@ const AdminMain = () => {
 const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
   const items = [
     {
-      onClickItem: () => setPanelSelected("productList"),
-      icon: <ViewList />,
-      iconName: "View List",
-    },
-    {
       onClickItem: () => setPanelSelected("dashboard"),
       icon: <DashboardIcon />,
       iconName: "Dashboard",
     },
+    {
+      onClickItem: () => setPanelSelected("productList"),
+      icon: <ViewList />,
+      iconName: "Products List",
+    },
+    {
+      onClickItem: () => setPanelSelected("usersList"),
+      icon: <Group />,
+      iconName: "Users List",
+    },
+    {
+      onClickItem: () => setPanelSelected("ordersList"),
+      icon: <AccountBalanceWallet />,
+      iconName: "Orders List",
+    },
+
     {
       onClickItem: () => setPanelSelected("creator"),
       icon: <AddCircleOutline />,

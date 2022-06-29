@@ -58,3 +58,14 @@ export const fetchAdminById = async (id, accessToken) => {
     console.log("error in fetchCategories", error);
   }
 };
+
+export const postNewCategory = async (data, accessToken) => {
+  const body = { ...data, accessToken };
+  console.log(body);
+  try {
+    const response = await axios.post(`${API_URL}/product`, body);
+    return response.data;
+  } catch (error) {
+    console.log("error in loginAdmin", error);
+  }
+};
