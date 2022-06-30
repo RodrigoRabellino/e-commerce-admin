@@ -64,7 +64,6 @@ const ProductList = () => {
   useEffect(() => {
     const getProducts = async () => {
       const response = await fetchAllProducts(accessToken);
-      console.log(response);
       setProducts(response);
     };
     const getCategories = async () => {
@@ -110,28 +109,29 @@ const ProductList = () => {
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
-
-          {products.length === 0 ? (
-            <CircularProgress />
-          ) : (
-            <TableBody>
-              {products.map((product) => {
-                const cat = categories.find(
-                  (category) => category._id === product.categoryId
-                );
-                return (
-                  <Row
-                    checkAll={checkAll}
-                    productRow={product}
-                    key={product._id}
-                    category={cat}
-                    handleSnack={handleSnack}
-                    handleModal={handleOpenModal}
-                  />
-                );
-              })}
-            </TableBody>
-          )}
+          <TableBody>
+            {products.length === 0 ? (
+              <CircularProgress />
+            ) : (
+              <>
+                {products.map((product) => {
+                  const cat = categories.find(
+                    (category) => category._id === product.categoryId
+                  );
+                  return (
+                    <Row
+                      checkAll={checkAll}
+                      productRow={product}
+                      key={product._id}
+                      category={cat}
+                      handleSnack={handleSnack}
+                      handleModal={handleOpenModal}
+                    />
+                  );
+                })}
+              </>
+            )}
+          </TableBody>
         </Table>
       </TableContainer>
       <MyModal handleClose={handleCloseModal} open={openModal}>

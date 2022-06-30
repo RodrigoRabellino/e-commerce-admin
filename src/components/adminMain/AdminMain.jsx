@@ -33,6 +33,7 @@ import { useDispatch } from "react-redux";
 import { logOutAdmin } from "../../redux/admin/slice";
 import DashBoard from "../dashboard/DashBoard";
 import Creator from "../creator/Creator";
+import UserList from "../userList/UserList";
 
 const drawerWidth = 220;
 
@@ -114,6 +115,7 @@ const AdminMain = () => {
   const handleDrawerClose = () => setOpen(false);
 
   const getPanel = (panel) => {
+    console.log(panel);
     switch (panel) {
       case "productList":
         return <ProductList />;
@@ -121,6 +123,8 @@ const AdminMain = () => {
         return <DashBoard />;
       case "creator":
         return <Creator />;
+      case "userList":
+        return <UserList />;
       default:
         return <DashBoard />;
     }
@@ -188,7 +192,7 @@ const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
       iconName: "Products List",
     },
     {
-      onClickItem: () => setPanelSelected("usersList"),
+      onClickItem: () => setPanelSelected("userList"),
       icon: <Group />,
       iconName: "Users List",
     },
