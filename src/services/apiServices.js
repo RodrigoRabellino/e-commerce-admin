@@ -52,11 +52,13 @@ export const fetchAdminById = async (id, accessToken) => {
   }
 };
 
-export const postNewProduct = async (data) => {
+export const postNewProduct = async (data, accessToken) => {
   const body = { ...data };
-  console.log(body);
   try {
-    const response = await axios.post(`${API_URL}/product`, body);
+    const response = await axios.post(
+      `${API_URL}/product?accessToken=${accessToken}`,
+      body
+    );
     return response.data;
   } catch (error) {
     console.log("error in loginAdmin", error);

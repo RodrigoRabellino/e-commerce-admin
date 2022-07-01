@@ -48,7 +48,7 @@ const NewProductForm = () => {
     if (catSelected === "1") return setErrorCategory(true);
 
     values.categoryId = catSelected.value;
-    const resp = await postNewProduct(values);
+    const resp = await postNewProduct(values, admin.accessToken);
     console.log(resp);
     handleOpenSnack(values.name + " created");
   };
