@@ -12,7 +12,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Paper,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
@@ -34,6 +33,7 @@ import { logOutAdmin } from "../../redux/admin/slice";
 import DashBoard from "../dashboard/DashBoard";
 import Creator from "../creator/Creator";
 import UserList from "../userList/UserList";
+import OrderList from "../orderList/OrderList";
 
 const drawerWidth = 220;
 
@@ -125,6 +125,8 @@ const AdminMain = () => {
         return <Creator />;
       case "userList":
         return <UserList />;
+      case "ordersList":
+        return <OrderList />;
       default:
         return <DashBoard />;
     }

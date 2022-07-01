@@ -94,3 +94,14 @@ export const toggleStarredProduct = async (id, accessToken) => {
     console.log("error in fetchCategories", error);
   }
 };
+
+export const fetchOrders = async (accessToken) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/order/?accessToken=${accessToken}`
+    );
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
