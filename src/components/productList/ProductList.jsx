@@ -68,6 +68,7 @@ const ProductList = () => {
     };
     const getCategories = async () => {
       const response = await fetchCategories();
+
       setCategories(response);
     };
     getProducts();
@@ -111,7 +112,9 @@ const ProductList = () => {
           </TableHead>
           <TableBody>
             {products.length === 0 ? (
-              <CircularProgress />
+              <>
+                <Typography>Nothing to see</Typography>
+              </>
             ) : (
               <>
                 {products.map((product) => {

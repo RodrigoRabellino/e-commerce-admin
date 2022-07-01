@@ -10,6 +10,8 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -22,6 +24,8 @@ ChartJS.register(
 
 const MyChartBar = ({ colors }) => {
   const { primary, secondary, third } = colors;
+  const admin = useSelector((store) => store.admin);
+  const [myData, setMyData] = useState([]);
   const options = {
     responsive: true,
     plugins: {
@@ -34,7 +38,6 @@ const MyChartBar = ({ colors }) => {
       },
     },
   };
-
   const labels = [
     "January",
     "February",
@@ -45,9 +48,8 @@ const MyChartBar = ({ colors }) => {
     "July",
   ];
 
-  const data = {
-    labels,
-    datasets: [
+  useEffect(() => {
+    setMyData([
       {
         label: "Guitars",
         data: labels.map(() => faker.datatype.number({ min: 0, max: 50 })),
@@ -63,7 +65,12 @@ const MyChartBar = ({ colors }) => {
         data: labels.map(() => faker.datatype.number({ min: 0, max: 50 })),
         backgroundColor: third,
       },
-    ],
+    ]);
+  }, []);
+
+  const data = {
+    labels,
+    datasets: [...myData],
   };
   return (
     <Box width="100%">

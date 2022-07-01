@@ -6,6 +6,7 @@ export const fetchAllProducts = async (accessToken) => {
     const response = await axios.get(
       `${API_URL}/product/all?accessToken=${accessToken}`
     );
+    console.log("services", response);
     return response.data;
   } catch (error) {
     return error;

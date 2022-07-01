@@ -9,7 +9,9 @@ import {
   TableBody,
   Button,
   Table,
+  IconButton,
 } from "@mui/material";
+import { Bathtub, PestControlRodent, Shower } from "@mui/icons-material";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -22,11 +24,11 @@ const OrderList = () => {
   useEffect(() => {
     const getOrders = async () => {
       const resp = await fetchOrders(accessToken);
+      console.log(resp);
       setOrdersList(resp);
     };
     getOrders();
   }, []);
-  console.log(ordersList[0]);
   return (
     <Box sx={{ width: "100%" }}>
       <Box display="flex" margin="0.65rem">
@@ -34,7 +36,7 @@ const OrderList = () => {
           Total orders: {ordersList.length}
         </Typography>
       </Box>
-      <TableContainer component={Box} sx={{ width: "60%" }}>
+      <TableContainer component={Box}>
         <Table aria-label="users table">
           <TableHead
             sx={{
@@ -44,6 +46,7 @@ const OrderList = () => {
             <TableRow>
               <TableCell align="center">Date</TableCell>
               <TableCell align="center">User Name</TableCell>
+              <TableCell align="center">User email</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">U$S</TableCell>
               <TableCell align="center">Actions</TableCell>
@@ -51,7 +54,9 @@ const OrderList = () => {
           </TableHead>
           <TableBody>
             {ordersList.length === 0 ? (
-              <CircularProgress />
+              <>
+                <Typography>Nothing To see</Typography>
+              </>
             ) : (
               <>
                 {ordersList.map((order) => {
@@ -75,11 +80,23 @@ const Row = ({ order }) => {
         <TableCell align="center">
           {format(new Date(createdAt), "dd/MM/yyyy-HH:mm")}
         </TableCell>
-        <TableCell align="center">{userId}</TableCell>
-
+        <TableCell align="center">{`${userId.firstName} ${userId.lastName}`}</TableCell>
+        <TableCell align="center">{userId.email}</TableCell>
         <TableCell align="center">{status}</TableCell>
         <TableCell align="center">{totalPrice}</TableCell>
-        <TableCell align="center"></TableCell>
+        <TableCell align="center">
+          <Box width="100%" display="flex" justifyContent="space-evenly">
+            <IconButton size="small">
+              <PestControlRodent />
+            </IconButton>
+            <IconButton size="small">
+              <Bathtub />
+            </IconButton>
+            <IconButton size="small">
+              <Shower />
+            </IconButton>
+          </Box>
+        </TableCell>
       </TableRow>
     </>
   );
