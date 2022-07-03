@@ -115,7 +115,6 @@ const AdminMain = () => {
   const handleDrawerClose = () => setOpen(false);
 
   const getPanel = (panel) => {
-    console.log(panel);
     switch (panel) {
       case "productList":
         return <ProductList />;

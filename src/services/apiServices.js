@@ -6,7 +6,6 @@ export const fetchAllProducts = async (accessToken) => {
     const response = await axios.get(
       `${API_URL}/product/all?accessToken=${accessToken}`
     );
-    console.log("services", response);
     return response.data;
   } catch (error) {
     return error;
@@ -106,5 +105,20 @@ export const fetchOrders = async (accessToken) => {
     return response.data;
   } catch (error) {
     return error;
+  }
+};
+
+export const updateProduct = async (id, accessToken, data) => {
+  const body = {
+    ...data,
+  };
+  try {
+    const response = await axios.put(
+      `${API_URL}/product/${id}?accessToken=${accessToken}`,
+      body
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error in update product", error);
   }
 };

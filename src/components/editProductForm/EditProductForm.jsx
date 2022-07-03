@@ -8,50 +8,25 @@ import {
   FormControl,
   Typography,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
 import { useFormik } from "formik";
 import { validationSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
-import { fetchCategories, postNewProduct } from "../../services/apiServices";
-import MySnackBar from "../snackBar/MySnackBar";
+import { fetchCategories, updateProduct } from "../../services/apiServices";
 import { useSelector } from "react-redux";
 
-const EditProductList = ({ product }) => {
+const EditProductList = ({
+  product,
+  handleSetProduct,
+  handleClose,
+  productCategory,
+}) => {
   const [categories, setCategories] = useState([]);
-  const [catSelected, setCatSelected] = useState({});
+  const [catSelected, setCatSelected] = useState(productCategory);
   const [ErrorCategory, setErrorCategory] = useState(false);
-  const [openSnack, setOpenSnack] = useState(false);
-  const [snackMessage, setSnackMessage] = useState("");
   const admin = useSelector((state) => state.admin);
-
-  const handleCloseSnack = () => setOpenSnack(false);
-  const handleOpenSnack = (message) => {
-    setSnackMessage(message);
-    setOpenSnack(true);
-  };
-
-  const handleChangeCategory = (newValue) => {
-    setErrorCategory(false);
-    setCatSelected(newValue);
-  };
-
-  useEffect(() => {
-    const getCategories = async () => {
-      const resp = await fetchCategories();
-      setCategories(resp);
-    };
-    getCategories();
-  }, []);
-
-  const handleSubmit = async (values) => {
-    if (catSelected === "1") return setErrorCategory(true);
-
-    values.categoryId = catSelected.value;
-    const resp = await postNewProduct(values);
-    console.log(resp);
-    handleOpenSnack(values.name + " created");
-  };
   const {
     _id,
     name,
@@ -63,6 +38,26 @@ const EditProductList = ({ product }) => {
     starred,
     show,
   } = product;
+  const handleChangeCategory = (newValue) => {
+    setErrorCategory(false);
+    setCatSelected(categories.find((category) => category._id === newValue.id));
+  };
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const resp = await fetchCategories();
+      setCategories(resp);
+    };
+    getCategories();
+  }, []);
+
+  const handleSubmit = async (values) => {
+    values.categoryId = catSelected._id;
+    const resp = await updateProduct(_id, admin.accessToken, values);
+    if (Object.entries(resp).length !== 0) handleSetProduct(resp);
+    handleClose();
+  };
+
   const formik = useFormik({
     initialValues: {
       name: name,
@@ -78,6 +73,7 @@ const EditProductList = ({ product }) => {
     onSubmit: (values) => handleSubmit(values),
   });
 
+  if (categories.length === 0) return <CircularProgress />;
   return (
     <Box width="500px">
       <Typography textAlign="center" fontWeight="600" fontSize="20px">
@@ -122,18 +118,18 @@ const EditProductList = ({ product }) => {
 
         <FormControl fullWidth sx={{ marginTop: "1rem" }}>
           <InputLabel id="categoryId">Category</InputLabel>
+
           <Select
             variant="standard"
             id="categoryId"
             label="Category"
             error={ErrorCategory}
-            value={catSelected.value}
+            value={catSelected._id}
             onChange={(e, newValue) => handleChangeCategory(newValue.props)}
           >
-            {categories.map((category, i) => {
+            {categories.map((category) => {
               return (
                 <MenuItem
-                  selected={categoryId === category._id ? true : false}
                   key={category._id}
                   value={category._id}
                   id={category._id}
@@ -171,19 +167,11 @@ const EditProductList = ({ product }) => {
           helperText={formik.touched.imgUrl && formik.errors.imgUrl}
         />
         <Box display="flex" marginTop="1rem">
-          <IconButton color="primary">
-            <Clear />
-          </IconButton>
           <Button sx={{ width: "100%" }} type="submit">
             Save
           </Button>
         </Box>
       </form>
-      <MySnackBar
-        open={openSnack}
-        handleClose={handleCloseSnack}
-        message={snackMessage}
-      />
     </Box>
   );
 };

@@ -3,6 +3,7 @@ import { SnackbarProvider } from "notistack";
 import { useSelector } from "react-redux/es/exports";
 import "./App.css";
 import AdminLogin from "./components/login/AdminLogin";
+import MySnackBar from "./components/snackBar/MySnackBar";
 import MyRoutes from "./MyRoutes";
 
 const myTheme = createTheme({
@@ -34,7 +35,10 @@ function App() {
     <ThemeProvider theme={myTheme}>
       <SnackbarProvider maxSnack={4}>
         <div className="App">
-          {Object.entries(admin).length === 0 ? <AdminLogin /> : <MyRoutes />}
+          <>
+            {Object.entries(admin).length === 0 ? <AdminLogin /> : <MyRoutes />}
+            <MySnackBar />
+          </>
         </div>
       </SnackbarProvider>
     </ThemeProvider>

@@ -19,6 +19,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { format } from "date-fns";
@@ -41,16 +42,8 @@ const ProductList = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [messageSnack, setMessageSnack] = useState("");
-  const [severitySnack, setSeveritySnack] = useState("");
+  const [severitySnack, setSeveritySnack] = useState("info");
   const { accessToken } = useSelector((state) => state.admin);
-  const [openModal, setOpenModal] = useState(false);
-  const [productToEdit, setProductToEdit] = useState({});
-
-  const handleOpenModal = (product) => {
-    setProductToEdit(product);
-    setOpenModal(true);
-  };
-  const handleCloseModal = () => setOpenModal(false);
 
   const handleOpenSnack = () => setOpenSnack(true);
   const handleCloseSnack = () => setOpenSnack(false);
@@ -106,7 +99,7 @@ const ProductList = () => {
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Stock</TableCell>
               <TableCell align="right">Starred</TableCell>
-              <TableCell align="center">Show</TableCell>
+              <TableCell align="center">Showed</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -118,17 +111,13 @@ const ProductList = () => {
             ) : (
               <>
                 {products.map((product) => {
-                  const cat = categories.find(
-                    (category) => category._id === product.categoryId
-                  );
                   return (
                     <Row
                       checkAll={checkAll}
                       productRow={product}
                       key={product._id}
-                      category={cat}
                       handleSnack={handleSnack}
-                      handleModal={handleOpenModal}
+                      categories={categories}
                     />
                   );
                 })}
@@ -137,9 +126,7 @@ const ProductList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <MyModal handleClose={handleCloseModal} open={openModal}>
-        <EditProductList product={productToEdit} />
-      </MyModal>
+
       <MySnackBar
         handleClose={handleCloseSnack}
         open={openSnack}
@@ -150,12 +137,23 @@ const ProductList = () => {
   );
 };
 
-const Row = ({ checkAll, productRow, category, handleSnack, handleModal }) => {
+const Row = ({ checkAll, productRow, handleSnack, categories }) => {
   const [product, setProduct] = useState(productRow);
-  const { name, price, starred, stock, show, _id } = product;
+  const { name, price, starred, stock, show, _id, categoryId } = product;
   const { accessToken } = useSelector((state) => state.admin);
   const [open, setOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const category = categories.find((cat) => cat._id === categoryId);
+
+  const handleOpenModal = () => setOpenModal(true);
+
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleSetProduct = (product) => {
+    console.log(product);
+    setProduct(product);
+  };
 
   const handleSetStarred = async () => {
     const response = await toggleStarredProduct(_id, accessToken);
@@ -168,14 +166,13 @@ const Row = ({ checkAll, productRow, category, handleSnack, handleModal }) => {
   const handleDelete = () => {
     handleSnack("this function is not available now", "warning");
   };
-
   return (
     <>
       <TableRow
         sx={
           isSelected
             ? {
-                backgroundColor: "rgb(169,255,228, 0.55)",
+                backgroundColor: "rgb(169,255,228, 0.22)",
               }
             : {}
         }
@@ -215,22 +212,27 @@ const Row = ({ checkAll, productRow, category, handleSnack, handleModal }) => {
             {stock}
           </Typography>
         </TableCell>
-        <TableCell align="right">
-          <Switch
-            checked={starred}
-            disabled={!isSelected}
-            onChange={handleSetStarred}
-          />
-        </TableCell>
-        <TableCell align="center">
-          <IconButton
-            size="small"
-            disabled={!isSelected}
-            onClick={handleToggleShow}
-          >
-            {show ? <Visibility /> : <VisibilityOff />}
-          </IconButton>
-        </TableCell>
+
+        <Tooltip title={isSelected ? "" : "Select row for edit"}>
+          <TableCell align="right">
+            <Switch
+              checked={starred}
+              disabled={!isSelected}
+              onChange={handleSetStarred}
+            />
+          </TableCell>
+        </Tooltip>
+        <Tooltip title={isSelected ? "" : "Select row for edit"}>
+          <TableCell align="center">
+            <Switch
+              color="secondary"
+              checked={show}
+              disabled={!isSelected}
+              onChange={handleToggleShow}
+            />
+          </TableCell>
+        </Tooltip>
+
         <TableCell align="center">
           <Box
             sx={{
@@ -239,7 +241,7 @@ const Row = ({ checkAll, productRow, category, handleSnack, handleModal }) => {
               flexWrap: "nowrap",
             }}
           >
-            <IconButton onClick={() => handleModal(product)}>
+            <IconButton onClick={handleOpenModal}>
               <Edit />
             </IconButton>
             <IconButton disabled={!isSelected} onClick={handleDelete}>
@@ -253,6 +255,15 @@ const Row = ({ checkAll, productRow, category, handleSnack, handleModal }) => {
           <ItemDesc open={open} product={product} />
         </TableCell>
       </TableRow>
+      <MyModal handleClose={handleCloseModal} open={openModal}>
+        <EditProductList
+          product={product}
+          handleClose={handleCloseModal}
+          handleSetProduct={handleSetProduct}
+          productCategory={category}
+        />
+      </MyModal>
+      <MySnackBar />
     </>
   );
 };

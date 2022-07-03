@@ -1,9 +1,7 @@
-import { Download, Upload } from "@mui/icons-material";
 import {
   Box,
   Button,
   CircularProgress,
-  Divider,
   Stack,
   TextField,
   Typography,
@@ -80,6 +78,7 @@ const Creator = () => {
           const { label, value } = item;
           return (
             <Button
+              key={item.value}
               color={formSelected === value ? "secondary" : "primary"}
               onClick={() => setFormSelected(value)}
               variant="contained"
