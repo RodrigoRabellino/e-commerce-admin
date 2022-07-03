@@ -3,13 +3,10 @@ import {
   Edit,
   KeyboardArrowUp,
   KeyboardArrowRight,
-  Visibility,
-  VisibilityOff,
 } from "@mui/icons-material";
 import {
   Box,
   Checkbox,
-  CircularProgress,
   Collapse,
   IconButton,
   Switch,
@@ -144,14 +141,18 @@ const Row = ({ checkAll, productRow, handleSnack, categories }) => {
   const [open, setOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
   const category = categories.find((cat) => cat._id === categoryId);
 
   const handleOpenModal = () => setOpenModal(true);
-
   const handleCloseModal = () => setOpenModal(false);
 
+  const handleCloseSnack = () => setOpenSnack(false);
+
   const handleSetProduct = (product) => {
-    console.log(product);
+    setSnackMessage(`Product ${product.name.substring(0, 10)} updated`);
+    setOpenSnack(true);
     setProduct(product);
   };
 
@@ -263,7 +264,11 @@ const Row = ({ checkAll, productRow, handleSnack, categories }) => {
           productCategory={category}
         />
       </MyModal>
-      <MySnackBar />
+      <MySnackBar
+        open={openSnack}
+        handleClose={handleCloseSnack}
+        message={snackMessage}
+      />
     </>
   );
 };
