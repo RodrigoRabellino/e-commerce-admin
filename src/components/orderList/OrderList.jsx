@@ -11,15 +11,25 @@ import {
   Table,
   IconButton,
 } from "@mui/material";
-import { Bathtub, PestControlRodent, Shower } from "@mui/icons-material";
+import {
+  Bathtub,
+  LocalShipping,
+  PestControlRodent,
+  Print,
+  Shower,
+} from "@mui/icons-material";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { fetchOrders, fetchUsers } from "../../services/apiServices";
-const OrderList = () => {
+import {
+  fetchOrders,
+  fetchUsers,
+  shippingOrder,
+} from "../../services/apiServices";
+
+const OrderList = ({ handleOpenSnack }) => {
   const [ordersList, setOrdersList] = useState([]);
   const { accessToken } = useSelector((state) => state.admin);
-  const [orderSelected, setorderSelected] = useState(0);
 
   useEffect(() => {
     const getOrders = async () => {
@@ -48,6 +58,7 @@ const OrderList = () => {
               <TableCell align="center">User Name</TableCell>
               <TableCell align="center">User email</TableCell>
               <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Updated at</TableCell>
               <TableCell align="center">U$S</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
@@ -60,7 +71,13 @@ const OrderList = () => {
             ) : (
               <>
                 {ordersList.map((order) => {
-                  return <Row order={order} key={order._id} />;
+                  return (
+                    <Row
+                      orderRow={order}
+                      key={order._id}
+                      handleOpenSnack={handleOpenSnack}
+                    />
+                  );
                 })}
               </>
             )}
@@ -72,8 +89,19 @@ const OrderList = () => {
   );
 };
 
-const Row = ({ order }) => {
-  const { userId, createdAt, status, totalPrice } = order;
+const Row = ({ orderRow, handleOpenSnack }) => {
+  const [order, setOrder] = useState(orderRow);
+  const { accessToken } = useSelector((store) => store.admin);
+  const { userId, createdAt, updatedAt, status, totalPrice, _id } = order;
+
+  const handleShipping = async () => {
+    if (status === "shipped")
+      return handleOpenSnack("This order already shipped", "warning");
+    const resp = await shippingOrder(_id, accessToken);
+    handleOpenSnack(`Order ${_id} shipped`, "success");
+    setOrder(resp);
+  };
+
   return (
     <>
       <TableRow>
@@ -83,18 +111,32 @@ const Row = ({ order }) => {
         <TableCell align="center">{`${userId.firstName} ${userId.lastName}`}</TableCell>
         <TableCell align="center">{userId.email}</TableCell>
         <TableCell align="center">{status}</TableCell>
+        <TableCell align="center">
+          {format(new Date(updatedAt), "dd/MM/yyyy-HH:mm")}
+        </TableCell>
         <TableCell align="center">{totalPrice}</TableCell>
         <TableCell align="center">
           <Box width="100%" display="flex" justifyContent="space-evenly">
-            <IconButton size="small">
-              <PestControlRodent />
-            </IconButton>
-            <IconButton size="small">
-              <Bathtub />
-            </IconButton>
-            <IconButton size="small">
-              <Shower />
-            </IconButton>
+            <Button
+              size="small"
+              color="warning"
+              onClick={() =>
+                handleOpenSnack("This function is not enabled", "warning")
+              }
+            >
+              Cancel
+            </Button>
+            <Button size="small" onClick={handleShipping}>
+              <LocalShipping /> Ship
+            </Button>
+            <Button
+              size="small"
+              color="secondary"
+              onClick={() => handleOpenSnack("Coming soon!", "info")}
+            >
+              <Print />
+              Print
+            </Button>
           </Box>
         </TableCell>
       </TableRow>

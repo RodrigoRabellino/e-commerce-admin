@@ -8,8 +8,10 @@ import {
   FormControl,
   Typography,
   InputLabel,
+  Input,
+  Chip,
 } from "@mui/material";
-import { Clear } from "@mui/icons-material";
+import { AddPhotoAlternate, Camera, Clear } from "@mui/icons-material";
 import { useFormik } from "formik";
 import { validationSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
@@ -23,6 +25,7 @@ const NewProductForm = () => {
   const [ErrorCategory, setErrorCategory] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
+  const [fileUploaded, setFileUploaded] = useState([]);
   const admin = useSelector((state) => state.admin);
 
   const handleCloseSnack = () => setOpenSnack(false);
@@ -34,6 +37,12 @@ const NewProductForm = () => {
   const handleChangeCategory = (newValue) => {
     setErrorCategory(false);
     setCatSelected(newValue);
+  };
+
+  const handleUpload = (value) => {
+    console.log(value.target.files[0]);
+    const files = value.target.files;
+    setFileUploaded([files[0]]);
   };
 
   useEffect(() => {
@@ -48,6 +57,7 @@ const NewProductForm = () => {
     if (catSelected === "1") return setErrorCategory(true);
 
     values.categoryId = catSelected.value;
+    values.imgUrl = fileUploaded;
     const resp = await postNewProduct(values, admin.accessToken);
     console.log(resp);
     handleOpenSnack(values.name + " created");
@@ -149,20 +159,21 @@ const NewProductForm = () => {
           }
           helperText={formik.touched.description && formik.errors.description}
         />
-        <TextField
-          variant="standard"
-          fullWidth
-          id="imgUrl"
-          label="ImgUrl"
-          value={formik.values.imgUrl}
-          onChange={formik.handleChange}
-          error={formik.touched.imgUrl && Boolean(formik.errors.imgUrl)}
-          helperText={formik.touched.imgUrl && formik.errors.imgUrl}
-        />
         <Box display="flex" marginTop="1rem">
-          <IconButton color="primary">
-            <Clear />
-          </IconButton>
+          <label htmlFor="add-file">
+            <Input
+              accept="image/*"
+              id="add-file"
+              multiple
+              type="file"
+              hidden
+              value={fileUploaded}
+              onChange={(e) => handleUpload(e)}
+            />
+            <Button variant="text" component="span" sx={{ width: "100%" }}>
+              <AddPhotoAlternate /> Upload
+            </Button>
+          </label>
           <Button sx={{ width: "100%" }} type="submit">
             Save
           </Button>

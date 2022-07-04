@@ -122,3 +122,14 @@ export const updateProduct = async (id, accessToken, data) => {
     console.log("error in update product", error);
   }
 };
+
+export const shippingOrder = async (id, accessToken) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/order/${id}?accessToken=${accessToken}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error in update product", error);
+  }
+};

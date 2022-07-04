@@ -40,14 +40,14 @@ const AdminLogin = () => {
     try {
       const admin = await getTokenAdmin(email, password);
       if (!Object.entries(admin).length === 0) {
-        setErrorMessage("credentials are not good");
+        setErrorMessage("Bad credentials");
         setLoading(false);
         return setError(true);
       }
       handleLogin(admin);
     } catch (error) {
-      setErrorMessage("credentials are not good");
-      setError(true);
+      setErrorMessage("unknown error, try again later");
+      handleSnackOpen();
     }
     setLoading(false);
   };

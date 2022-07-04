@@ -34,6 +34,7 @@ import DashBoard from "../dashboard/DashBoard";
 import Creator from "../creator/Creator";
 import UserList from "../userList/UserList";
 import OrderList from "../orderList/OrderList";
+import MySnackBar from "../snackBar/MySnackBar";
 
 const drawerWidth = 220;
 
@@ -107,6 +108,17 @@ const AdminMain = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [panelSelected, setPanelSelected] = useState("dashboard");
+  const [openSnack, setOpenSnack] = useState(false);
+  const [messageSnack, setMessageSnack] = useState("");
+  const [severitySnack, setSeveritySnack] = useState("success");
+
+  const handleOpenSnack = (message, severity) => {
+    setMessageSnack(message);
+    setSeveritySnack(severity);
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnack = () => setOpenSnack(false);
 
   const handleLogOut = () => dispatch(logOutAdmin());
 
@@ -117,17 +129,17 @@ const AdminMain = () => {
   const getPanel = (panel) => {
     switch (panel) {
       case "productList":
-        return <ProductList />;
+        return <ProductList handleOpenSnack={handleOpenSnack} />;
       case "dashboard":
-        return <DashBoard />;
+        return <DashBoard handleOpenSnack={handleOpenSnack} />;
       case "creator":
-        return <Creator />;
+        return <Creator handleOpenSnack={handleOpenSnack} />;
       case "userList":
-        return <UserList />;
+        return <UserList handleOpenSnack={handleOpenSnack} />;
       case "ordersList":
-        return <OrderList />;
+        return <OrderList handleOpenSnack={handleOpenSnack} />;
       default:
-        return <DashBoard />;
+        return <DashBoard handleOpenSnack={handleOpenSnack} />;
     }
   };
 
@@ -176,6 +188,12 @@ const AdminMain = () => {
       >
         {getPanel(panelSelected)}
       </Box>
+      <MySnackBar
+        message={messageSnack}
+        handleClose={handleCloseSnack}
+        severity={severitySnack}
+        open={openSnack}
+      />
     </Box>
   );
 };
