@@ -85,7 +85,9 @@ const Row = ({ user, handleOpenSnack }) => {
         <TableCell align="center">{phone}</TableCell>
         <TableCell align="center">{address[0].substring(0, 25)}</TableCell>
         <TableCell align="center" onClick={handleResetPassword}>
-          <Button size="small">Reset Pass</Button>
+          <Button size="small" variant="outlined">
+            Reset Pass
+          </Button>
         </TableCell>
       </TableRow>
     </>

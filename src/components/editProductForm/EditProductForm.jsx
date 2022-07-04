@@ -62,7 +62,6 @@ const EditProductList = ({
     initialValues: {
       name: name,
       description: description,
-      imgUrl: "",
       price: price,
       stock: stock,
       categoryId: categoryId,
@@ -155,16 +154,6 @@ const EditProductList = ({
             formik.touched.description && Boolean(formik.errors.description)
           }
           helperText={formik.touched.description && formik.errors.description}
-        />
-        <TextField
-          variant="standard"
-          fullWidth
-          id="imgUrl"
-          label="ImgUrl"
-          value={formik.values.imgUrl}
-          onChange={formik.handleChange}
-          error={formik.touched.imgUrl && Boolean(formik.errors.imgUrl)}
-          helperText={formik.touched.imgUrl && formik.errors.imgUrl}
         />
         <Box display="flex" marginTop="1rem">
           <Button sx={{ width: "100%" }} type="submit">

@@ -1,48 +1,31 @@
 import {
   Box,
   TextField,
-  IconButton,
   Button,
   Select,
   MenuItem,
   FormControl,
   Typography,
   InputLabel,
-  Input,
-  Chip,
 } from "@mui/material";
-import { AddPhotoAlternate, Camera, Clear } from "@mui/icons-material";
 import { useFormik } from "formik";
 import { validationSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
 import { fetchCategories, postNewProduct } from "../../services/apiServices";
-import MySnackBar from "../snackBar/MySnackBar";
 import { useSelector } from "react-redux";
 
-const NewProductForm = () => {
+const NewProductForm = ({ handleOpenSnack }) => {
   const [categories, setCategories] = useState([]);
-  const [catSelected, setCatSelected] = useState({});
+  const [catSelected, setCatSelected] = useState({
+    value: "62bf16449a945cb3238bc9b9",
+  });
   const [ErrorCategory, setErrorCategory] = useState(false);
-  const [openSnack, setOpenSnack] = useState(false);
-  const [snackMessage, setSnackMessage] = useState("");
-  const [fileUploaded, setFileUploaded] = useState([]);
-  const admin = useSelector((state) => state.admin);
 
-  const handleCloseSnack = () => setOpenSnack(false);
-  const handleOpenSnack = (message) => {
-    setSnackMessage(message);
-    setOpenSnack(true);
-  };
+  const admin = useSelector((state) => state.admin);
 
   const handleChangeCategory = (newValue) => {
     setErrorCategory(false);
     setCatSelected(newValue);
-  };
-
-  const handleUpload = (value) => {
-    console.log(value.target.files[0]);
-    const files = value.target.files;
-    setFileUploaded([files[0]]);
   };
 
   useEffect(() => {
@@ -53,21 +36,20 @@ const NewProductForm = () => {
     getCategories();
   }, []);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, resetForm) => {
     if (catSelected === "1") return setErrorCategory(true);
 
     values.categoryId = catSelected.value;
-    values.imgUrl = fileUploaded;
     const resp = await postNewProduct(values, admin.accessToken);
     console.log(resp);
-    handleOpenSnack(values.name + " created");
+    resetForm();
+    handleOpenSnack(`${values.name} created`);
   };
 
   const formik = useFormik({
     initialValues: {
       name: "",
       description: "",
-      imgUrl: "",
       price: 1,
       stock: 1,
       categoryId: "",
@@ -75,7 +57,7 @@ const NewProductForm = () => {
       createdBy: admin._id,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => handleSubmit(values),
+    onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
   });
 
   return (
@@ -160,30 +142,11 @@ const NewProductForm = () => {
           helperText={formik.touched.description && formik.errors.description}
         />
         <Box display="flex" marginTop="1rem">
-          <label htmlFor="add-file">
-            <Input
-              accept="image/*"
-              id="add-file"
-              multiple
-              type="file"
-              hidden
-              value={fileUploaded}
-              onChange={(e) => handleUpload(e)}
-            />
-            <Button variant="text" component="span" sx={{ width: "100%" }}>
-              <AddPhotoAlternate /> Upload
-            </Button>
-          </label>
           <Button sx={{ width: "100%" }} type="submit">
             Save
           </Button>
         </Box>
       </form>
-      <MySnackBar
-        open={openSnack}
-        handleClose={handleCloseSnack}
-        message={snackMessage}
-      />
     </Box>
   );
 };

@@ -7,8 +7,10 @@ import {
 import {
   Box,
   Checkbox,
+  CircularProgress,
   Collapse,
   IconButton,
+  Paper,
   Switch,
   Table,
   TableBody,
@@ -71,7 +73,12 @@ const ProductList = () => {
         width: "100%",
       }}
     >
-      <TableContainer component={Box}>
+      <Box display="flex" marginBottom="0.65rem">
+        <Typography fontWeight="600">
+          Total orders: {products.length}
+        </Typography>
+      </Box>
+      <TableContainer component={Paper}>
         <Table aria-label="product table">
           <TableHead
             sx={{
@@ -79,10 +86,7 @@ const ProductList = () => {
             }}
           >
             <TableRow>
-              <TableCell align="center">
-                <Typography fontWeight="600">Total:</Typography>
-                <Typography fontWeight="600">{products.length}</Typography>
-              </TableCell>
+              <TableCell align="center" />
               <TableCell align="center" sx={{ width: "60px" }}>
                 <Checkbox
                   value={checkAll}
@@ -103,7 +107,16 @@ const ProductList = () => {
           <TableBody>
             {products.length === 0 ? (
               <>
-                <Typography>Nothing to see</Typography>
+                <Box
+                  sx={{
+                    width: "100%",
+                    paddingY: "2rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
               </>
             ) : (
               <>
@@ -252,7 +265,7 @@ const Row = ({ checkAll, productRow, handleSnack, categories }) => {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
           <ItemDesc open={open} product={product} />
         </TableCell>
       </TableRow>

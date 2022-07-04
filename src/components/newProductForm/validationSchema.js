@@ -10,7 +10,6 @@ export const validationSchema = yup.object({
     .min(5)
     .max(200)
     .required("Desc is required"),
-  imgUrl: yup.string("enter a valid Url").required("url is required").min(5),
   price: yup.number("price is number").min(1),
   stock: yup.number("stock is number").min(1),
   createdBy: yup.string("enter a valid created"),

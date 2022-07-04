@@ -34,11 +34,10 @@ const OrderList = ({ handleOpenSnack }) => {
   useEffect(() => {
     const getOrders = async () => {
       const resp = await fetchOrders(accessToken);
-      console.log(resp);
       setOrdersList(resp);
     };
     getOrders();
-  }, []);
+  }, [accessToken]);
   return (
     <Box sx={{ width: "100%" }}>
       <Box display="flex" margin="0.65rem">

@@ -107,7 +107,7 @@ const AdminMain = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [panelSelected, setPanelSelected] = useState("dashboard");
+  const [panelSelected, setPanelSelected] = useState("productList");
   const [openSnack, setOpenSnack] = useState(false);
   const [messageSnack, setMessageSnack] = useState("");
   const [severitySnack, setSeveritySnack] = useState("success");
@@ -183,6 +183,7 @@ const AdminMain = () => {
           width: "100%",
           backgroundColor: "#fafbfd",
           marginTop: "64px",
+          padding: "2rem",
           overflowY: "scroll",
         }}
       >
@@ -201,11 +202,6 @@ const AdminMain = () => {
 const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
   const items = [
     {
-      onClickItem: () => setPanelSelected("dashboard"),
-      icon: <DashboardIcon />,
-      iconName: "Dashboard",
-    },
-    {
       onClickItem: () => setPanelSelected("productList"),
       icon: <ViewList />,
       iconName: "Products List",
@@ -220,7 +216,11 @@ const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
       icon: <AccountBalanceWallet />,
       iconName: "Orders List",
     },
-
+    {
+      onClickItem: () => setPanelSelected("dashboard"),
+      icon: <DashboardIcon />,
+      iconName: "Dashboard",
+    },
     {
       onClickItem: () => setPanelSelected("creator"),
       icon: <AddCircleOutline />,

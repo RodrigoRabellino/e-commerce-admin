@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { fetchCategories, postNewCategory } from "../../services/apiServices";
 import { useSelector } from "react-redux";
 
-const Creator = () => {
+const Creator = ({ handleOpenSnack }) => {
   const buttonStyle = {
     transition: "0.3s",
     width: "90%",
@@ -39,12 +39,12 @@ const Creator = () => {
   const getForm = (form) => {
     switch (form) {
       case "newProduct":
-        return <NewProductForm />;
+        return <NewProductForm handleOpenSnack={handleOpenSnack} />;
       case "newCategory":
-        return <NewCategoryForm />;
+        return <NewCategoryForm handleOpenSnack={handleOpenSnack} />;
 
       default:
-        return <NewProductForm />;
+        return <NewProductForm handleOpenSnack={handleOpenSnack} />;
     }
   };
 
