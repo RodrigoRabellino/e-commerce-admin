@@ -94,9 +94,17 @@ const Row = ({ orderRow, handleOpenSnack }) => {
   const { accessToken } = useSelector((store) => store.admin);
   const { userId, createdAt, updatedAt, status, totalPrice, _id } = order;
 
+  const statusColor = {
+    confirmed: "rgb(255, 255,0, 0.22 )",
+    shipped: "rgb(0, 0, 255, 0.22 )",
+    delivered: "rgb(0, 255,0, 0.22 )",
+  };
+
   const handleShipping = async () => {
     if (status === "shipped")
       return handleOpenSnack("This order already shipped", "warning");
+    if (status === "delivered")
+      return handleOpenSnack("This order already delivered", "warning");
     const resp = await shippingOrder(_id, accessToken);
     handleOpenSnack(`Order ${_id} shipped`, "success");
     setOrder(resp);
@@ -110,7 +118,9 @@ const Row = ({ orderRow, handleOpenSnack }) => {
         </TableCell>
         <TableCell align="center">{`${userId.firstName} ${userId.lastName}`}</TableCell>
         <TableCell align="center">{userId.email}</TableCell>
-        <TableCell align="center">{status}</TableCell>
+        <TableCell align="center" sx={{ background: statusColor[status] }}>
+          {status}
+        </TableCell>
         <TableCell align="center">
           {format(new Date(updatedAt), "dd/MM/yyyy-HH:mm")}
         </TableCell>

@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { fetchUsers } from "../../services/apiServices";
 
-const UserList = () => {
+const UserList = ({ handleOpenSnack }) => {
   const [usersList, setUsersList] = useState([]);
   const { accessToken } = useSelector((state) => state.admin);
   useEffect(() => {
@@ -53,7 +53,13 @@ const UserList = () => {
             ) : (
               <>
                 {usersList.map((user) => {
-                  return <Row user={user} key={user._id} />;
+                  return (
+                    <Row
+                      user={user}
+                      key={user._id}
+                      handleOpenSnack={handleOpenSnack}
+                    />
+                  );
                 })}
               </>
             )}
@@ -64,8 +70,11 @@ const UserList = () => {
   );
 };
 
-const Row = ({ user }) => {
+const Row = ({ user, handleOpenSnack }) => {
   const { firstName, lastName, email, phone, address } = user;
+
+  const handleResetPassword = () => handleOpenSnack("coming soon!", "info");
+
   return (
     <>
       <TableRow>
@@ -75,13 +84,8 @@ const Row = ({ user }) => {
         <TableCell align="center">{email}</TableCell>
         <TableCell align="center">{phone}</TableCell>
         <TableCell align="center">{address[0].substring(0, 25)}</TableCell>
-        <TableCell align="center">
-          <Box width="100%" display="flex">
-            <Button size="small">Reset Pass</Button>
-            <Button size="small" color="warning" variant="outlined">
-              Ban
-            </Button>
-          </Box>
+        <TableCell align="center" onClick={handleResetPassword}>
+          <Button size="small">Reset Pass</Button>
         </TableCell>
       </TableRow>
     </>

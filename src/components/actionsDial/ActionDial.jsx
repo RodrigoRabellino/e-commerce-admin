@@ -37,7 +37,7 @@ const ActionDial = () => {
       >
         <SpeedDial
           ariaLabel="SpeedDial basic example"
-          sx={{ position: "absolute", bottom: 16, right: 16 }}
+          sx={{ position: "absolute", bottom: 32, right: 32 }}
           icon={<HomeRepairService />}
         >
           {actions.map((action) => (
