@@ -23,7 +23,7 @@ const UserList = ({ handleOpenSnack }) => {
       setUsersList(resp);
     };
     getUsers();
-  }, []);
+  }, [accessToken]);
 
   return (
     <Box sx={{ width: "100%" }}>

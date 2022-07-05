@@ -1,7 +1,6 @@
 import {
   Box,
   TextField,
-  IconButton,
   Button,
   Select,
   MenuItem,
@@ -10,7 +9,6 @@ import {
   InputLabel,
   CircularProgress,
 } from "@mui/material";
-import { Clear } from "@mui/icons-material";
 import { useFormik } from "formik";
 import { validationSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
@@ -27,17 +25,7 @@ const EditProductList = ({
   const [catSelected, setCatSelected] = useState(productCategory);
   const [ErrorCategory, setErrorCategory] = useState(false);
   const admin = useSelector((state) => state.admin);
-  const {
-    _id,
-    name,
-    description,
-    imgUrl,
-    price,
-    stock,
-    categoryId,
-    starred,
-    show,
-  } = product;
+  const { _id, name, description, price, stock, categoryId, starred } = product;
   const handleChangeCategory = (newValue) => {
     setErrorCategory(false);
     setCatSelected(categories.find((category) => category._id === newValue.id));

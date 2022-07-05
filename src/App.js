@@ -30,7 +30,6 @@ const myTheme = createTheme({
 
 function App() {
   const admin = useSelector((state) => state.admin);
-  console.log("admin desde app", admin);
   return (
     <ThemeProvider theme={myTheme}>
       <SnackbarProvider maxSnack={4}>

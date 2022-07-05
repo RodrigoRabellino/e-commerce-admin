@@ -10,7 +10,6 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 ChartJS.register(
@@ -24,7 +23,6 @@ ChartJS.register(
 
 const MyChartBar = ({ colors }) => {
   const { primary, secondary, third } = colors;
-  const admin = useSelector((store) => store.admin);
   const [myData, setMyData] = useState([]);
   const options = {
     responsive: true,
@@ -66,7 +64,7 @@ const MyChartBar = ({ colors }) => {
         backgroundColor: third,
       },
     ]);
-  }, []);
+  }, [primary, secondary, third]);
 
   const data = {
     labels,

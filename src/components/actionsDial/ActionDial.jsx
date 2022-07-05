@@ -1,29 +1,21 @@
-import { Box, SpeedDial, SpeedDialAction, Modal } from "@mui/material";
-import {
-  HomeRepairService,
-  Add,
-  PersonAdd,
-  Print,
-  Cottage,
-} from "@mui/icons-material";
+import { Box, SpeedDial, SpeedDialAction } from "@mui/material";
+import { HomeRepairService, Add, Print, Cottage } from "@mui/icons-material";
 import { useState } from "react";
 import MyModal from "../myModal/MyModal";
 import NewProductForm from "../newProductForm/NewProductForm";
 const ActionDial = () => {
   const [openModal, setShowModal] = useState(false);
   const actions = [
-    { icon: <Add />, name: "New Product" },
-    { icon: <PersonAdd />, name: "New User" },
-    { icon: <Print />, name: "Print Report" },
-    { icon: <Cottage />, name: "Visit commerce" },
+    { icon: <Add />, name: "New Product", onClick: () => handleOpenModal() },
+    { icon: <Print />, name: "Print Report", onClick: () => {} },
+    {
+      icon: <Cottage />,
+      name: "Visit commerce",
+      onClick: () => {
+        window.open(process.env.REACT_APP_HOME_COMMERCE, "_blank");
+      },
+    },
   ];
-
-  // onClick={() => {
-  //   window.open(
-  //     process.env.REACT_APP_HOME_COMMERCE,
-  //     "_blank"
-  //   );
-  // }}
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -42,7 +34,7 @@ const ActionDial = () => {
         >
           {actions.map((action) => (
             <SpeedDialAction
-              onClick={handleOpenModal}
+              onClick={action.onClick}
               key={action.name}
               icon={action.icon}
               tooltipTitle={action.name}

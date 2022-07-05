@@ -65,7 +65,7 @@ const ProductList = () => {
     };
     getProducts();
     getCategories();
-  }, []);
+  }, [accessToken]);
 
   return (
     <Box
@@ -78,7 +78,7 @@ const ProductList = () => {
           Total orders: {products.length}
         </Typography>
       </Box>
-      <TableContainer component={Paper}>
+      <TableContainer component={Box}>
         <Table aria-label="product table">
           <TableHead
             sx={{
@@ -287,17 +287,17 @@ const Row = ({ checkAll, productRow, handleSnack, categories }) => {
 };
 
 const ItemDesc = ({ open, product }) => {
-  const { name, createdAt, createdBy, description, imgUrl, _id } = product;
-  const admin = useSelector((state) => state.admin);
+  const { name, createdAt, createdBy, description, imgUrl } = product;
+  const { accessToken } = useSelector((state) => state.admin);
   const [createdName, setCreatedName] = useState("");
 
   useEffect(() => {
     const getAdminById = async () => {
-      const resp = await fetchAdminById(createdBy, admin.accessToken);
+      const resp = await fetchAdminById(createdBy, accessToken);
       setCreatedName(`${resp.firstName} ${resp.lastName}`);
     };
     getAdminById();
-  }, []);
+  }, [accessToken, createdBy]);
 
   return (
     <Collapse in={open} timeout="auto" unmountOnExit>

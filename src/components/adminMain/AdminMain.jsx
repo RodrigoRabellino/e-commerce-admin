@@ -183,7 +183,7 @@ const AdminMain = () => {
           width: "100%",
           backgroundColor: "#fafbfd",
           marginTop: "64px",
-          padding: "2rem",
+          paddingY: "2rem",
           overflowY: "scroll",
         }}
       >

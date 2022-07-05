@@ -9,23 +9,12 @@ import {
   TableBody,
   Button,
   Table,
-  IconButton,
 } from "@mui/material";
-import {
-  Bathtub,
-  LocalShipping,
-  PestControlRodent,
-  Print,
-  Shower,
-} from "@mui/icons-material";
+import { LocalShipping, Print } from "@mui/icons-material";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  fetchOrders,
-  fetchUsers,
-  shippingOrder,
-} from "../../services/apiServices";
+import { fetchOrders, shippingOrder } from "../../services/apiServices";
 
 const OrderList = ({ handleOpenSnack }) => {
   const [ordersList, setOrdersList] = useState([]);
@@ -65,7 +54,7 @@ const OrderList = ({ handleOpenSnack }) => {
           <TableBody>
             {ordersList.length === 0 ? (
               <>
-                <Typography>Nothing To see</Typography>
+                <CircularProgress />
               </>
             ) : (
               <>
@@ -83,7 +72,6 @@ const OrderList = ({ handleOpenSnack }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box></Box>
     </Box>
   );
 };
