@@ -3,6 +3,7 @@ import {
   Edit,
   KeyboardArrowUp,
   KeyboardArrowRight,
+  Category,
 } from "@mui/icons-material";
 import {
   Box,
@@ -127,7 +128,6 @@ const ProductList = () => {
                       productRow={product}
                       key={product._id}
                       handleSnack={handleSnack}
-                      categories={categories}
                     />
                   );
                 })}
@@ -147,7 +147,7 @@ const ProductList = () => {
   );
 };
 
-const Row = ({ checkAll, productRow, handleSnack, categories }) => {
+const Row = ({ checkAll, productRow, handleSnack }) => {
   const [product, setProduct] = useState(productRow);
   const { name, price, starred, stock, show, _id, categoryId } = product;
   const { accessToken } = useSelector((state) => state.admin);
@@ -156,7 +156,6 @@ const Row = ({ checkAll, productRow, handleSnack, categories }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
-  const category = categories.find((cat) => cat._id === categoryId);
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -213,7 +212,7 @@ const Row = ({ checkAll, productRow, handleSnack, categories }) => {
         </TableCell>
         <TableCell align="right">
           <Typography fontWeight="600" noWrap textOverflow="ellipsis">
-            {category.name}
+            {categoryId.name}
           </Typography>
         </TableCell>
         <TableCell align="right">
@@ -274,7 +273,6 @@ const Row = ({ checkAll, productRow, handleSnack, categories }) => {
           product={product}
           handleClose={handleCloseModal}
           handleSetProduct={handleSetProduct}
-          productCategory={category}
         />
       </MyModal>
       <MySnackBar
