@@ -34,7 +34,7 @@ import {
 } from "../../services/apiServices";
 import MySnackBar from "../snackBar/MySnackBar";
 import MyModal from "../myModal/MyModal";
-import EditProductList from "../editProductForm/EditProductForm";
+import EditProductForm from "../editProductForm/EditProductForm";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -269,7 +269,7 @@ const Row = ({ checkAll, productRow, handleSnack }) => {
         </TableCell>
       </TableRow>
       <MyModal handleClose={handleCloseModal} open={openModal}>
-        <EditProductList
+        <EditProductForm
           product={product}
           handleClose={handleCloseModal}
           handleSetProduct={handleSetProduct}

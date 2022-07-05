@@ -54,7 +54,7 @@ const OrderList = ({ handleOpenSnack }) => {
           <TableBody>
             {ordersList.length === 0 ? (
               <>
-                <CircularProgress />
+                <Typography>Nothing to see...</Typography>
               </>
             ) : (
               <>

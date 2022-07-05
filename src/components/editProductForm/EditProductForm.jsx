@@ -15,17 +15,12 @@ import { useState, useEffect } from "react";
 import { fetchCategories, updateProduct } from "../../services/apiServices";
 import { useSelector } from "react-redux";
 
-const EditProductList = ({
-  product,
-  handleSetProduct,
-  handleClose,
-  productCategory,
-}) => {
+const EditProductForm = ({ product, handleSetProduct, handleClose }) => {
+  const { _id, name, description, price, stock, categoryId, starred } = product;
   const [categories, setCategories] = useState([]);
-  const [catSelected, setCatSelected] = useState(productCategory);
+  const [catSelected, setCatSelected] = useState(product.categoryId);
   const [ErrorCategory, setErrorCategory] = useState(false);
   const admin = useSelector((state) => state.admin);
-  const { _id, name, description, price, stock, categoryId, starred } = product;
   const handleChangeCategory = (newValue) => {
     setErrorCategory(false);
     setCatSelected(categories.find((category) => category._id === newValue.id));
@@ -153,4 +148,4 @@ const EditProductList = ({
   );
 };
 
-export default EditProductList;
+export default EditProductForm;
