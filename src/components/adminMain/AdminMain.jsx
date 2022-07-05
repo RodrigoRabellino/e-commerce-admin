@@ -311,5 +311,4 @@ const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
     </>
   );
 };
-
 export default AdminMain;
