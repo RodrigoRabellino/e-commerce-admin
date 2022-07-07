@@ -181,6 +181,7 @@ const AdminMain = () => {
       <Box
         sx={{
           width: "100%",
+          maxHeight: "800px",
           backgroundColor: "#fafbfd",
           marginTop: "64px",
           paddingY: "2rem",

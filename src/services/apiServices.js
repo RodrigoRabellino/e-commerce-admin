@@ -61,7 +61,7 @@ export const postNewProduct = async (data, accessToken) => {
     );
     return response.data;
   } catch (error) {
-    console.log("error in loginAdmin", error);
+    console.log("error in postNewProduct", error);
   }
 };
 export const postNewCategory = async (data, accessToken) => {

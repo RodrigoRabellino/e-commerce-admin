@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -97,7 +98,7 @@ const Creator = ({ handleOpenSnack }) => {
           justifyContent: "center",
         }}
       >
-        {getForm(formSelected)}
+        <Paper sx={{ p: "2rem" }}>{getForm(formSelected)}</Paper>
       </Box>
     </Box>
   );

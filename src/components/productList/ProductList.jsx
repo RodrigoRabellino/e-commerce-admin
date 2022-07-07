@@ -101,7 +101,7 @@ const ProductList = () => {
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Stock</TableCell>
               <TableCell align="right">Starred</TableCell>
-              <TableCell align="center">Showed</TableCell>
+              <TableCell align="center">Visibility</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
