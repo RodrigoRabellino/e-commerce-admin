@@ -38,7 +38,7 @@ import EditProductForm from "../editProductForm/EditProductForm";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [messageSnack, setMessageSnack] = useState("");
@@ -59,13 +59,13 @@ const ProductList = () => {
       const response = await fetchAllProducts(accessToken);
       setProducts(response);
     };
-    const getCategories = async () => {
-      const response = await fetchCategories();
+    // const getCategories = async () => {
+    //   const response = await fetchCategories();
 
-      setCategories(response);
-    };
+    //   setCategories(response);
+    // };
     getProducts();
-    getCategories();
+    // getCategories();
   }, [accessToken]);
 
   return (
@@ -76,8 +76,11 @@ const ProductList = () => {
     >
       <Box display="flex" marginBottom="0.65rem">
         <Typography fontWeight="600">
-          Total orders:{" "}
+          Total orders:
           <span style={{ fontFamily: "number" }}> {products.length}</span>
+        </Typography>
+        <Typography fontWeight="600" marginLeft="1rem">
+          Total products: {products.length}
         </Typography>
       </Box>
       <TableContainer component={Box}>
@@ -98,11 +101,16 @@ const ProductList = () => {
               <TableCell sx={{ width: "40%", overflow: "hidden" }}>
                 Name
               </TableCell>
-              <TableCell align="right">Category</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Stock</TableCell>
-              <TableCell align="right">Starred</TableCell>
-              <TableCell align="center">Showed</TableCell>
+              <TableCell align="left">Category</TableCell>
+              <TableCell align="left">Price</TableCell>
+              <TableCell align="left">Stock</TableCell>
+              <TableCell
+                align="center"
+                sx={{ borderLeft: "2px solid rgb(0,0,0, 0.1)" }}
+              >
+                Starred
+              </TableCell>
+              <TableCell align="center">Visibility</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -186,7 +194,7 @@ const Row = ({ checkAll, productRow, handleSnack }) => {
         sx={
           isSelected
             ? {
-                backgroundColor: "rgb(169,255,228, 0.22)",
+                backgroundColor: "rgb(204,209,171, 0.22)",
               }
             : {}
         }
@@ -211,24 +219,27 @@ const Row = ({ checkAll, productRow, handleSnack }) => {
             {name.substring(0, 50)} {name.length > 50 ? "..." : ""}
           </Typography>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="left">
           <Typography fontWeight="600" noWrap textOverflow="ellipsis">
             {categoryId.name}
           </Typography>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="left">
           <Typography noWrap textOverflow="ellipsis">
             <span style={{ fontFamily: "number" }}> {`U$S-${price}`}</span>
           </Typography>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="left">
           <Typography noWrap textOverflow="ellipsis">
             {stock}
           </Typography>
         </TableCell>
 
         <Tooltip title={isSelected ? "" : "Select row for edit"}>
-          <TableCell align="right">
+          <TableCell
+            align="center"
+            sx={{ borderLeft: "2px solid rgb(0,0,0, 0.1)" }}
+          >
             <Switch
               checked={starred}
               disabled={!isSelected}
@@ -319,6 +330,7 @@ const ItemDesc = ({ open, product }) => {
         </Box>
         <Box display="flex" justifyContent="space-evenly">
           {imgUrl.map((image) => {
+            const imageUrl = process.env.REACT_APP_IMAGE_HOSTING_URL + image;
             return (
               <Box
                 key={image}
@@ -332,7 +344,7 @@ const ItemDesc = ({ open, product }) => {
                     width: "100%",
                     height: "100%",
                   }}
-                  srcSet={image}
+                  srcSet={imageUrl}
                   alt="product"
                 />
               </Box>

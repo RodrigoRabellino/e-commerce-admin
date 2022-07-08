@@ -5,7 +5,6 @@ import {
   TableHead,
   TableCell,
   Typography,
-  CircularProgress,
   TableBody,
   Button,
   Table,
@@ -30,7 +29,7 @@ const OrderList = ({ handleOpenSnack }) => {
   return (
     <Box sx={{ width: "100%" }}>
       <Box display="flex" margin="0.65rem">
-        <Typography fontWeight="600">
+        <Typography fontWeight="600" marginLeft="1rem">
           Total orders: {ordersList.length}
         </Typography>
       </Box>

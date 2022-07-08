@@ -9,18 +9,22 @@ import MyRoutes from "./MyRoutes";
 const myTheme = createTheme({
   palette: {
     primary: {
-      main: "#BF8832",
-      contrastText: "#F2DBB8",
-      dark: "#8C5032",
+      main: "#ab832a",
+      light: "#F2DBB8",
+      dark: "#3E2707",
     },
     secondary: {
-      main: "#8C5032",
-      light: "#F2DBB8",
+      main: "#7B8723",
+      light: "#f6feea",
       contrastText: "#F2DBB8",
     },
+    text: {
+      primary: "rgba(0, 0, 0, 0.8)",
+      secondary: "#494948;",
+    },
     background: {
-      default: "#fafbfd",
-      paper: "#fafbfd",
+      default: "#FCFAF6",
+      paper: "#FCFAF6",
     },
   },
   typography: {

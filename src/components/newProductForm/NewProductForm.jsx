@@ -13,13 +13,18 @@ import { validationSchema } from "./validationSchema";
 import { useState, useEffect } from "react";
 import { fetchCategories, postNewProduct } from "../../services/apiServices";
 import { useSelector } from "react-redux";
+import { supabase } from "../../services/supabaseServices";
+import { LoadingButton } from "@mui/lab";
 
 const NewProductForm = ({ handleOpenSnack }) => {
   const [categories, setCategories] = useState([]);
   const [catSelected, setCatSelected] = useState({
     value: "62bf16449a945cb3238bc9b9",
   });
+  const [uploadImage, setUploadImage] = useState(false);
   const [ErrorCategory, setErrorCategory] = useState(false);
+  const [imageList, setImageList] = useState([]);
+  const [errorUpload, setErrorUpload] = useState("");
 
   const admin = useSelector((state) => state.admin);
 
@@ -38,8 +43,9 @@ const NewProductForm = ({ handleOpenSnack }) => {
 
   const handleSubmit = async (values, resetForm) => {
     if (catSelected === "1") return setErrorCategory(true);
-
     values.categoryId = catSelected.value;
+    values.imgUrl = [...imageList];
+
     const resp = await postNewProduct(values, admin.accessToken);
     console.log(resp);
     resetForm();
@@ -59,6 +65,33 @@ const NewProductForm = ({ handleOpenSnack }) => {
     validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
   });
+
+  const uploadFile = async (files) => {
+    setErrorUpload("");
+
+    const totalFiles = Object.entries(files).length;
+    if (totalFiles > 3)
+      return setErrorUpload("Pleas, only 3 images per product");
+    setUploadImage(true);
+    try {
+      for (let i = 0; i < totalFiles; i++) {
+        const { data, error } = await supabase.storage
+          .from("products")
+          .upload(
+            `/${files[i].lastModified}-${files[i].name.substring(0, 7)}`,
+            files[i]
+          );
+        if (error) {
+          setUploadImage(false);
+          return setErrorUpload("this images already exist");
+        }
+        setImageList((prev) => [...prev, data.Key]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setUploadImage(false);
+  };
 
   return (
     <Box width="500px">
@@ -129,6 +162,7 @@ const NewProductForm = ({ handleOpenSnack }) => {
 
         <TextField
           variant="standard"
+          sx={{ mt: "1rem" }}
           fullWidth
           id="description"
           label="Product description"
@@ -141,10 +175,32 @@ const NewProductForm = ({ handleOpenSnack }) => {
           }
           helperText={formik.touched.description && formik.errors.description}
         />
+        <Box mt="1rem">
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            id="file_upload"
+            name="file_upload"
+            onChange={(e) => uploadFile(e.target.files)}
+          />
+          <Box>
+            {errorUpload.length === 0 ? (
+              <></>
+            ) : (
+              <Typography sx={{ color: "red" }}>{errorUpload}</Typography>
+            )}
+          </Box>
+        </Box>
+
         <Box display="flex" marginTop="1rem">
-          <Button sx={{ width: "100%" }} type="submit">
+          <LoadingButton
+            sx={{ width: "100%" }}
+            type="submit"
+            disabled={uploadImage}
+          >
             Save
-          </Button>
+          </LoadingButton>
         </Box>
       </form>
     </Box>
