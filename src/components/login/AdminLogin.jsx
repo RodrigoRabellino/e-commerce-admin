@@ -79,11 +79,12 @@ const AdminLogin = () => {
               justifyContent: "space-between",
               padding: "2rem",
               height: "325px",
+              width: "320px",
               background: "#ffffff",
               borderRadius: "15px",
             }}
           >
-            <Typography variant="h3" fontWeight="600" color="primary">
+            <Typography variant="h5" fontWeight="600" color="primary">
               Admin Login
             </Typography>
             <Box height="100%" paddingTop="0.65rem">

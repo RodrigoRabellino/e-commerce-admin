@@ -38,7 +38,7 @@ import EditProductForm from "../editProductForm/EditProductForm";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [messageSnack, setMessageSnack] = useState("");
@@ -59,13 +59,13 @@ const ProductList = () => {
       const response = await fetchAllProducts(accessToken);
       setProducts(response);
     };
-    const getCategories = async () => {
-      const response = await fetchCategories();
+    // const getCategories = async () => {
+    //   const response = await fetchCategories();
 
-      setCategories(response);
-    };
+    //   setCategories(response);
+    // };
     getProducts();
-    getCategories();
+    // getCategories();
   }, [accessToken]);
 
   return (
@@ -75,8 +75,8 @@ const ProductList = () => {
       }}
     >
       <Box display="flex" marginBottom="0.65rem">
-        <Typography fontWeight="600">
-          Total orders: {products.length}
+        <Typography fontWeight="600" marginLeft="1rem">
+          Total products: {products.length}
         </Typography>
       </Box>
       <TableContainer component={Box}>
@@ -185,7 +185,7 @@ const Row = ({ checkAll, productRow, handleSnack }) => {
         sx={
           isSelected
             ? {
-                backgroundColor: "rgb(169,255,228, 0.22)",
+                backgroundColor: "rgb(204,209,171, 0.22)",
               }
             : {}
         }
