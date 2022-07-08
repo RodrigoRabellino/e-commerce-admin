@@ -97,10 +97,15 @@ const ProductList = () => {
               <TableCell sx={{ width: "40%", overflow: "hidden" }}>
                 Name
               </TableCell>
-              <TableCell align="right">Category</TableCell>
-              <TableCell align="right">Price</TableCell>
-              <TableCell align="right">Stock</TableCell>
-              <TableCell align="right">Starred</TableCell>
+              <TableCell align="left">Category</TableCell>
+              <TableCell align="left">Price</TableCell>
+              <TableCell align="left">Stock</TableCell>
+              <TableCell
+                align="center"
+                sx={{ borderLeft: "2px solid rgb(0,0,0, 0.1)" }}
+              >
+                Starred
+              </TableCell>
               <TableCell align="center">Visibility</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
@@ -210,24 +215,27 @@ const Row = ({ checkAll, productRow, handleSnack }) => {
             {name.substring(0, 50)} {name.length > 50 ? "..." : ""}
           </Typography>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="left">
           <Typography fontWeight="600" noWrap textOverflow="ellipsis">
             {categoryId.name}
           </Typography>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="left">
           <Typography noWrap textOverflow="ellipsis">
             {`U$S-${price}`}
           </Typography>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="left">
           <Typography noWrap textOverflow="ellipsis">
             {stock}
           </Typography>
         </TableCell>
 
         <Tooltip title={isSelected ? "" : "Select row for edit"}>
-          <TableCell align="right">
+          <TableCell
+            align="center"
+            sx={{ borderLeft: "2px solid rgb(0,0,0, 0.1)" }}
+          >
             <Switch
               checked={starred}
               disabled={!isSelected}

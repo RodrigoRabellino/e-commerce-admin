@@ -12,6 +12,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Tooltip,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import MuiDrawer from "@mui/material/Drawer";
@@ -251,28 +252,30 @@ const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
           const { onClickItem, icon, iconName } = item;
           return (
             <ListItem disablePadding sx={{ display: "block" }} key={iconName}>
-              <ListItemButton
-                onClick={onClickItem}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+              <Tooltip title={open ? "" : iconName} placement="left">
+                <ListItemButton
+                  onClick={onClickItem}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  {icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={iconName}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={iconName}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </Tooltip>
             </ListItem>
           );
         })}
@@ -283,28 +286,30 @@ const DrawerItems = ({ open, handleLogOut, setPanelSelected }) => {
           const { onClickAction, icon, iconName } = action;
           return (
             <ListItem disablePadding sx={{ display: "block" }} key={iconName}>
-              <ListItemButton
-                onClick={onClickAction}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+              <Tooltip title={open ? "" : iconName} placement="left">
+                <ListItemButton
+                  onClick={onClickAction}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  {icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={iconName}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={iconName}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </Tooltip>
             </ListItem>
           );
         })}
