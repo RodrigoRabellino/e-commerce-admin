@@ -76,7 +76,8 @@ const ProductList = () => {
     >
       <Box display="flex" marginBottom="0.65rem">
         <Typography fontWeight="600">
-          Total orders: {products.length}
+          Total orders:{" "}
+          <span style={{ fontFamily: "number" }}> {products.length}</span>
         </Typography>
       </Box>
       <TableContainer component={Box}>
@@ -217,7 +218,7 @@ const Row = ({ checkAll, productRow, handleSnack }) => {
         </TableCell>
         <TableCell align="right">
           <Typography noWrap textOverflow="ellipsis">
-            {`U$S-${price}`}
+            <span style={{ fontFamily: "number" }}> {`U$S-${price}`}</span>
           </Typography>
         </TableCell>
         <TableCell align="right">
