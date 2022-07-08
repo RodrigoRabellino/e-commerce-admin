@@ -318,6 +318,8 @@ const ItemDesc = ({ open, product }) => {
         </Box>
         <Box display="flex" justifyContent="space-evenly">
           {imgUrl.map((image) => {
+            const imageUrl = process.env.REACT_APP_IMAGE_HOSTING_URL + image;
+            console.log(imageUrl);
             return (
               <Box
                 key={image}
@@ -331,7 +333,7 @@ const ItemDesc = ({ open, product }) => {
                     width: "100%",
                     height: "100%",
                   }}
-                  srcSet={image}
+                  srcSet={imageUrl}
                   alt="product"
                 />
               </Box>
