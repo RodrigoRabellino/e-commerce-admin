@@ -319,7 +319,6 @@ const ItemDesc = ({ open, product }) => {
         <Box display="flex" justifyContent="space-evenly">
           {imgUrl.map((image) => {
             const imageUrl = process.env.REACT_APP_IMAGE_HOSTING_URL + image;
-            console.log(imageUrl);
             return (
               <Box
                 key={image}
