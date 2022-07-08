@@ -85,7 +85,8 @@ const NewProductForm = ({ handleOpenSnack }) => {
           setUploadImage(false);
           return setErrorUpload("this images already exist");
         }
-        setImageList((prev) => [...prev, data.Key]);
+        console.log(data.Key.split("/")[1]);
+        setImageList((prev) => [...prev, data.Key.split("/")[1]]);
       }
     } catch (error) {
       console.log(error);
