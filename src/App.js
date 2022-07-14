@@ -8,6 +8,7 @@ import MyRoutes from "./MyRoutes";
 import { Box, Fab } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import { Group } from "@mui/icons-material";
 
 const myTheme = createTheme({
   palette: {
@@ -58,10 +59,12 @@ function App() {
                   right: 0,
                 },
               }}
-              onClick={() => navigate("/about")}
+              onClick={() =>
+                window.open("https://guitarrero.vercel.app/about", "_blank")
+              }
             >
               <Fab variant="extended" color="secondary" aria-label="add">
-                <NavigationIcon sx={{ mr: 1 }} />
+                <Group sx={{ mr: 1 }} />
                 About
               </Fab>
             </Box>
