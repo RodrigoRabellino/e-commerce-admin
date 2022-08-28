@@ -1,4 +1,13 @@
-import { ThemeProvider, createTheme } from "@mui/material";
+import {
+  ThemeProvider,
+  createTheme,
+  Modal,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Link,
+} from "@mui/material";
 import { SnackbarProvider } from "notistack";
 import { useSelector } from "react-redux/es/exports";
 import "./App.css";
@@ -9,6 +18,7 @@ import { Box, Fab } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import { Group } from "@mui/icons-material";
+import { useState } from "react";
 
 const myTheme = createTheme({
   palette: {
@@ -39,6 +49,7 @@ const myTheme = createTheme({
 function App() {
   const admin = useSelector((state) => state.admin);
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(true);
   return (
     <ThemeProvider theme={myTheme}>
       <SnackbarProvider maxSnack={4}>
@@ -68,6 +79,42 @@ function App() {
                 About
               </Fab>
             </Box>
+            <Modal open={openModal} onClose={() => setOpenModal(false)}>
+              <Card
+                style={{
+                  padding: "1rem",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <CardHeader title="Bienvenido, gracias por visitarnos." />
+                <CardContent>
+                  <Typography>
+                    Esta es una parte de nuestro proyecto de fin de curso.
+                    Puedes ver mas en{" "}
+                    <Link
+                      href="https://guitarrero.vercel.app/about"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      nuestra web.
+                    </Link>{" "}
+                  </Typography>
+                  <Typography>
+                    Tambien puedes acceder a este sitio con las siguientes
+                    credenciales:
+                  </Typography>
+                  <Typography>
+                    <b>Email: </b>admin@admin.com
+                  </Typography>
+                  <Typography>
+                    <b>Pass:</b>1234
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Modal>
           </>
         </div>
       </SnackbarProvider>
